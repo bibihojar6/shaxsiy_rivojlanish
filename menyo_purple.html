@@ -1,0 +1,1993 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="theme-color" content="#130d2a"/>
+<title>MenYo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,400;1,9..144,700&family=DM+Sans:wght@300;400;500;600&family=Caveat:wght@500;700&display=swap" rel="stylesheet"/>
+<style>
+/* ═══════════════════════════
+   TOKENS
+═══════════════════════════ */
+:root{
+  /* ── Binafsha kosmik tema ── */
+  --bg:#130d2a;          /* #0F0A1F ga yaqin, biroz ochroq */
+  --s1:#1e1640;          /* #1B1535 asosida — kartochka */
+  --s2:#2a1f58;          /* #3A2A6A ga yaqin, o'rta */
+  --s3:#3a2a6a;          /* to'q binafsha surface */
+  --bd:rgba(179,108,255,.15);
+  --bd2:rgba(179,108,255,.25);
+
+  /* ── Binafsha-limon oltin ── */
+  --gold:#d4a0ff;        /* #D6A8FF — yumshoq binafsha-oltin */
+  --gold2:#b36cff;       /* #B36CFF — yorqin binafsha */
+  --goldl:rgba(179,108,255,.13);
+
+  /* ── Platina oq-binafsha ── */
+  --silver:#c8caef;      /* oq-binafsha platina */
+  --silver2:#e2e4f8;     /* yorqin platina-oq */
+  --silverl:rgba(200,202,239,.12);
+
+  /* ── Ko'k-indigo ── */
+  --blue:#6a7cff;        /* #6A7CFF — elektrik ko'k */
+  --blue2:#8b9aff;       /* yorqin indigo */
+  --bluel:rgba(106,124,255,.13);
+
+  /* ── Teal — binafsha-ko'k ── */
+  --teal:#c04a8b;        /* #C04A8B — magenta-binafsha */
+  --teal2:#f2a1d1;       /* #F2A1D1 — pushti yumshoq */
+  --teall:rgba(192,74,139,.12);
+
+  /* ── Qizil-pushti ── */
+  --rose:#f2a1d1;        /* #F2A1D1 — yumshoq pushti */
+  --rose2:#ff7eb3;       /* yorqin pushti */
+  --rosel:rgba(242,161,209,.13);
+
+  /* ── Yashil (sage — ikkinchi) ── */
+  --sage:#8b9aff;
+  --violet:#d6a8ff;
+
+  /* ── Matn — yorqin, to'q emas ── */
+  --t1:#f0ecff;          /* deyarli oq, binafsha soyasi */
+  --t2:#b8aed8;          /* o'rta — lavanda */
+  --t3:#7a6fa0;          /* muted — to'q lavanda */
+
+  --nav:56px;
+  --bot:64px;
+  --r:12px;
+  --r2:8px;
+
+  --ff:'DM Sans',sans-serif;
+  --fd:'Fraunces',serif;
+  --fc:'Caveat',cursive;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html{scroll-behavior:smooth;}
+
+body{
+  background:var(--bg);
+  color:var(--t1);
+  font-family:var(--ff);
+  font-size:15px;
+  min-height:100dvh;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* scrollbar */
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:rgba(179,108,255,.3);border-radius:2px;}
+
+/* ═══════════════════════════
+   TYPOGRAPHY
+═══════════════════════════ */
+.fd{font-family:var(--fd);}
+.fc{font-family:var(--fc);}
+.t1{color:var(--t1);}
+.t2{color:var(--t2);}
+.t3{color:var(--t3);}
+.gold{color:var(--gold);}
+.teal{color:var(--teal);}
+.rose{color:var(--rose);}
+.sage{color:var(--sage);}
+
+/* ═══════════════════════════
+   LAYOUT
+═══════════════════════════ */
+#auth-screen{
+  position:fixed;inset:0;z-index:600;
+  background:var(--bg);
+  display:flex;align-items:center;justify-content:center;
+  padding:1rem;
+  overflow-y:auto;
+}
+
+#app{display:none;}
+#app.on{display:block;}
+
+/* top nav — desktop only */
+#topnav{
+  position:fixed;top:0;left:0;right:0;height:var(--nav);
+  background:rgba(19,13,42,.94);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--bd);
+  z-index:100;
+  display:flex;align-items:center;
+  padding:0 1rem;gap:.5rem;
+}
+.tnlogo{
+  font-family:var(--fd);font-style:italic;font-size:1.3rem;
+  color:var(--t1);margin-right:.75rem;white-space:nowrap;
+}
+.tnlogo b{color:var(--gold);font-style:normal;}
+.tnlinks{display:flex;gap:.25rem;flex:1;overflow:hidden;}
+.tnbtn{
+  display:flex;align-items:center;gap:.35rem;
+  padding:.38rem .85rem;
+  background:none;border:none;
+  color:var(--t2);font-family:var(--ff);font-size:.82rem;font-weight:500;
+  cursor:pointer;border-radius:20px;transition:all .2s;
+  white-space:nowrap;
+}
+.tnbtn:hover{color:var(--t1);background:rgba(179,108,255,.08);}
+.tnbtn.on{color:var(--gold2);background:var(--goldl);}
+.tnright{display:flex;align-items:center;gap:.6rem;margin-left:auto;}
+.nav-av{
+  width:32px;height:32px;border-radius:50%;
+  border:2px solid var(--gold);
+  background:var(--s2);
+  overflow:hidden;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.9rem;flex-shrink:0;
+}
+.nav-av img{width:100%;height:100%;object-fit:cover;}
+
+/* bottom nav — mobile */
+#botnav{
+  position:fixed;bottom:0;left:0;right:0;
+  height:var(--bot);
+  background:rgba(19,13,42,.97);
+  backdrop-filter:blur(20px);
+  border-top:1px solid var(--bd);
+  z-index:100;
+  display:none;
+  grid-template-columns:repeat(5,1fr);
+  align-items:center;
+}
+.bnbtn{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:3px;height:100%;
+  background:none;border:none;
+  color:var(--t3);font-family:var(--ff);font-size:.6rem;font-weight:500;
+  cursor:pointer;transition:color .2s;
+  -webkit-tap-highlight-color:transparent;
+}
+.bnbtn .ico{font-size:1.25rem;line-height:1;transition:transform .2s;}
+.bnbtn.on{color:var(--gold);}
+.bnbtn.on .ico{transform:scale(1.15);}
+
+/* pages */
+.pg{
+  display:none;
+  padding-top:var(--nav);
+  padding-bottom:4px;
+  min-height:100dvh;
+  animation:fu .28s ease;
+}
+.pg.on{display:block;}
+
+@keyframes fu{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+/* mobile page padding */
+@media(max-width:639px){
+  #topnav{display:none;}
+  #botnav{display:grid;}
+  .pg{padding-top:8px;padding-bottom:calc(var(--bot) + 8px);}
+}
+@media(min-width:640px){
+  #botnav{display:none;}
+}
+
+.wrap{max-width:1000px;margin:0 auto;padding:1.25rem 1rem;}
+
+/* ═══════════════════════════
+   COMPONENTS
+═══════════════════════════ */
+
+/* Card */
+.card{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);padding:1.1rem;box-shadow:0 2px 16px rgba(90,60,160,.18);}
+
+/* Chip */
+.chip{
+  display:inline-flex;align-items:center;gap:.3rem;
+  font-family:var(--fc);font-size:.78rem;
+  padding:.18rem .65rem;border-radius:10px;
+}
+.chip-gold{background:var(--goldl);color:var(--gold);border:1px solid rgba(196,154,26,.2);}
+.chip-teal{background:var(--bluel);color:var(--blue);border:1px solid rgba(45,95,166,.15);}
+.chip-rose{background:var(--rosel);color:var(--rose);border:1px solid rgba(192,57,43,.15);}
+.chip-sage{background:rgba(114,184,114,.13);color:var(--sage);}
+.chip-vi{background:rgba(92,111,168,.1);color:var(--violet);border:1px solid rgba(92,111,168,.15);}
+.chip-dim{background:rgba(179,108,255,.08);color:var(--t2);}
+
+/* Pill tabs */
+.ptabs{display:flex;gap:.4rem;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;}
+.ptabs::-webkit-scrollbar{display:none;}
+.ptab{
+  padding:.38rem 1rem;
+  background:none;border:1px solid var(--bd2);
+  color:var(--t2);font-family:var(--ff);font-size:.8rem;font-weight:500;
+  cursor:pointer;border-radius:20px;transition:all .15s;
+  white-space:nowrap;flex-shrink:0;
+}
+.ptab.on,.ptab:active{background:rgba(184,133,10,.09);border-color:var(--gold);color:var(--gold);}
+
+/* Section heading */
+.sh{
+  font-family:var(--fd);font-style:italic;
+  font-size:1.05rem;color:var(--t1);
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:.85rem;
+}
+.sh-act{
+  font-family:var(--fc);font-size:.82rem;color:var(--gold);
+  background:none;border:none;cursor:pointer;padding:0;
+}
+
+/* form */
+.fl{margin-bottom:.85rem;}
+.fl label{
+  display:block;font-size:.72rem;font-weight:600;
+  color:var(--t2);letter-spacing:.05em;text-transform:uppercase;
+  margin-bottom:.3rem;
+}
+.fi{
+  width:100%;
+  background:var(--s2);border:1px solid var(--bd2);
+  border-radius:var(--r2);
+  padding:.6rem .9rem;
+  color:var(--t1);font-family:var(--ff);font-size:.9rem;
+  outline:none;transition:border-color .15s;
+  -webkit-appearance:none;appearance:none;
+}
+.fi:focus{border-color:var(--gold);}
+textarea.fi{resize:vertical;min-height:72px;}
+select.fi option{background:var(--s2);}
+input[type="range"]{accent-color:var(--gold);width:100%;}
+
+/* buttons */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:.4rem;
+  padding:.65rem 1.25rem;
+  border:none;border-radius:var(--r2);
+  font-family:var(--ff);font-size:.88rem;font-weight:600;
+  cursor:pointer;transition:all .18s;
+  -webkit-tap-highlight-color:transparent;
+}
+.btn-full{width:100%;}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#1a0f00;}
+.btn-gold:active{transform:scale(.97);}
+.btn-teal{background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;}
+.btn-ghost{background:transparent;border:1px solid var(--bd2);color:var(--t2);}
+.btn-ghost:hover{border-color:var(--bd2);color:var(--t1);}
+.btn-sm{padding:.38rem .9rem;font-size:.78rem;}
+.btn-rose{background:rgba(192,96,74,.13);border:1px solid rgba(232,112,112,.3);color:var(--rose);}
+
+/* Progress bar */
+.pbar{height:6px;background:rgba(179,108,255,.08);border-radius:3px;overflow:hidden;}
+.pfill{height:100%;border-radius:3px;transition:width .5s ease;}
+
+/* Lang switcher */
+.lang-sw{display:flex;gap:.3rem;}
+.lang-btn{
+  padding:.25rem .6rem;background:var(--s2);
+  border:1px solid var(--bd);border-radius:6px;
+  font-size:.72rem;font-weight:600;color:var(--t2);
+  cursor:pointer;transition:all .15s;
+}
+.lang-btn.on{background:rgba(184,133,10,.10);border-color:var(--gold);color:var(--gold);}
+
+/* Toast */
+#toast{
+  position:fixed;bottom:calc(var(--bot) + .75rem);left:50%;
+  transform:translateX(-50%) translateY(8px);
+  background:var(--s2);border:1px solid var(--bd2);
+  border-left:3px solid var(--gold2);
+  border-radius:var(--r2);padding:.6rem 1.1rem;
+  font-size:.85rem;color:var(--t1);
+  z-index:999;opacity:0;pointer-events:none;
+  transition:all .25s;white-space:nowrap;
+  max-width:90vw;text-align:center;
+}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+@media(min-width:640px){#toast{bottom:1.5rem;right:1.5rem;left:auto;transform:translateX(0) translateY(8px);}
+#toast.show{transform:translateX(0) translateY(0);}}
+
+/* ═══════════════════════════
+   AUTH
+═══════════════════════════ */
+.auth-box{
+  width:100%;max-width:400px;
+  background:var(--s1);border:1px solid var(--bd2);
+  border-radius:18px;padding:2rem 1.75rem;
+  position:relative;overflow:hidden;
+}
+.auth-box::before{
+  content:'';position:absolute;
+  top:-80px;right:-80px;
+  width:200px;height:200px;
+  background:radial-gradient(circle,rgba(184,133,10,.10),transparent 70%);
+  border-radius:50%;pointer-events:none;
+}
+.auth-logo{font-family:var(--fd);font-style:italic;font-size:1.9rem;color:var(--t1);margin-bottom:.15rem;}
+.auth-logo b{color:var(--gold);font-style:normal;}
+.auth-sub{font-family:var(--fc);color:var(--t2);font-size:.9rem;margin-bottom:1.75rem;}
+.atabs{display:flex;background:var(--s2);border-radius:9px;padding:3px;margin-bottom:1.5rem;}
+.atab{flex:1;padding:.45rem;background:none;border:none;
+  color:var(--t2);font-family:var(--ff);font-size:.85rem;font-weight:500;
+  cursor:pointer;border-radius:7px;transition:all .2s;}
+.atab.on{background:var(--s1);color:var(--t1);box-shadow:0 2px 8px rgba(0,0,0,.3);}
+.auth-divider{text-align:center;color:var(--t3);font-size:.78rem;margin:.9rem 0;position:relative;}
+.auth-divider::before,.auth-divider::after{content:'';position:absolute;top:50%;width:40%;height:1px;background:var(--bd2);}
+.auth-divider::before{left:0;}.auth-divider::after{right:0;}
+.gbtn{
+  width:100%;padding:.62rem;background:var(--s2);border:1px solid var(--bd2);
+  border-radius:var(--r2);color:var(--t1);font-family:var(--ff);font-size:.85rem;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.5rem;
+  transition:all .15s;
+}
+.gbtn:active{background:var(--s3);}
+.demo-hint{text-align:center;font-size:.72rem;color:var(--t3);margin-top:.75rem;}
+.auth-footer{display:flex;justify-content:space-between;align-items:center;margin-top:1.25rem;}
+
+/* ═══════════════════════════
+   DASHBOARD
+═══════════════════════════ */
+.dash-hero{
+  padding:1.5rem 1rem 1rem;
+  background:linear-gradient(160deg,rgba(184,133,10,.05) 0%,transparent 55%);
+  border-bottom:1px solid var(--bd);
+}
+.dash-hi{font-family:var(--fd);font-style:italic;font-size:clamp(1.5rem,5vw,2.2rem);color:var(--t1);line-height:1.2;}
+.dash-hi span{color:var(--gold);}
+.dash-date{font-family:var(--fc);color:var(--t2);font-size:.88rem;margin-top:.3rem;}
+
+.stats-row{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:.6rem;margin-bottom:1.1rem;
+}
+@media(max-width:480px){.stats-row{grid-template-columns:repeat(2,1fr);}}
+
+.scard{
+  background:var(--s1);border:1px solid var(--bd);
+  border-radius:var(--r);padding:.85rem .75rem;
+  position:relative;overflow:hidden;
+}
+.scard::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;
+  height:2.5px;border-radius:0 0 var(--r) var(--r);
+}
+.scard.c-gold::after{background:linear-gradient(90deg,var(--gold),var(--gold2));}
+.scard.c-teal::after{background:linear-gradient(90deg,var(--blue),var(--silver));}
+.scard.c-rose::after{background:linear-gradient(90deg,var(--rose),var(--rose2));}
+.scard.c-sage::after{background:linear-gradient(90deg,var(--teal),var(--teal2));}
+.scard-n{font-family:var(--fd);font-size:1.7rem;font-weight:600;color:var(--t1);line-height:1;}
+.scard-l{font-family:var(--fc);font-size:.78rem;color:var(--t2);margin-top:.25rem;}
+
+.dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;}
+@media(max-width:560px){.dash-grid{grid-template-columns:1fr;}}
+
+/* quote widget */
+.qcard{
+  background:linear-gradient(135deg,rgba(184,133,10,.08),rgba(61,191,176,.06));
+  border:1px solid rgba(184,133,10,.15);
+  border-radius:var(--r);padding:1.25rem;position:relative;overflow:hidden;
+}
+.qcard::before{content:'"';position:absolute;top:-.4rem;left:.6rem;
+  font-family:serif;font-size:5rem;color:var(--gold);opacity:.12;line-height:1;}
+.qt{font-family:var(--fd);font-style:italic;font-size:.97rem;color:var(--t1);line-height:1.6;position:relative;}
+.qa{font-family:var(--fc);color:var(--teal);font-size:.85rem;margin-top:.6rem;}
+
+/* ring */
+.ring-row{display:flex;align-items:center;gap:1rem;margin-bottom:.75rem;}
+.ring-info .val{font-family:var(--fd);font-size:1.4rem;font-weight:600;color:var(--t1);}
+.ring-info .sub{font-family:var(--fc);font-size:.8rem;color:var(--t2);}
+
+/* book row */
+.brow{display:flex;align-items:center;gap:.65rem;padding:.5rem 0;border-bottom:1px solid var(--bd);}
+.brow:last-child{border-bottom:none;}
+.brow-bar{width:3px;height:32px;border-radius:2px;flex-shrink:0;}
+.brow-title{font-family:var(--fd);font-style:italic;font-size:.85rem;color:var(--t1);}
+.brow-author{font-family:var(--fc);font-size:.75rem;color:var(--t2);}
+
+/* task row mini */
+.trow-mini{display:flex;align-items:center;gap:.6rem;padding:.45rem 0;border-bottom:1px solid var(--bd);}
+.trow-mini:last-child{border-bottom:none;}
+.tchk{width:16px;height:16px;border-radius:50%;border:1.5px solid rgba(255,255,255,.15);
+  display:flex;align-items:center;justify-content:center;font-size:.55rem;color:white;flex-shrink:0;}
+.tchk.dn{background:var(--sage);border-color:var(--sage);}
+.trow-mini span{font-size:.83rem;color:var(--t1);}
+.trow-mini span.dn{text-decoration:line-through;color:var(--t3);}
+
+/* ═══════════════════════════
+   LIBRARY
+═══════════════════════════ */
+.search-row{position:relative;}
+.search-row input{padding-left:2.2rem !important;}
+.search-ic{position:absolute;left:.75rem;top:50%;transform:translateY(-50%);font-size:.85rem;color:var(--t3);pointer-events:none;}
+
+.books-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(155px,1fr));
+  gap:.85rem;
+}
+@media(max-width:380px){.books-grid{grid-template-columns:1fr 1fr;}}
+
+.bcard{
+  background:var(--s1);border:1px solid var(--bd);
+  border-radius:var(--r);overflow:hidden;
+  transition:transform .2s,border-color .2s;
+  cursor:pointer;
+}
+.bcard:active{transform:scale(.97);}
+.bcard-spine{height:5px;}
+.bcard-body{padding:.9rem .85rem;}
+.bcard-title{font-family:var(--fd);font-style:italic;font-size:.9rem;color:var(--t1);margin-bottom:.2rem;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.bcard-auth{font-family:var(--fc);font-size:.8rem;color:var(--t2);margin-bottom:.45rem;}
+.bcard-stars{font-size:.75rem;color:var(--gold);margin-bottom:.4rem;}
+.bcard-rev{font-size:.73rem;color:var(--t2);line-height:1.5;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:.55rem;}
+
+/* material card */
+.mcard{
+  background:var(--s1);border:1px solid var(--bd);
+  border-radius:var(--r);padding:1rem;
+  display:flex;flex-direction:column;gap:.5rem;
+  transition:border-color .2s;cursor:pointer;
+}
+.mcard:active{transform:scale(.98);}
+.mcard-title{font-family:var(--fd);font-style:italic;font-size:.92rem;color:var(--t1);}
+.mcard-desc{font-size:.78rem;color:var(--t2);line-height:1.5;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.mcard-foot{display:flex;justify-content:space-between;align-items:center;margin-top:.15rem;}
+.mcard-auth{font-family:var(--fc);font-size:.78rem;color:var(--t2);}
+.mcard-link{font-size:.75rem;color:var(--teal);text-decoration:none;}
+
+.mat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:.85rem;}
+@media(max-width:560px){.mat-grid{grid-template-columns:1fr;}}
+
+/* ═══════════════════════════
+   COMMUNITY
+═══════════════════════════ */
+.rev-card{
+  background:var(--s1);border:1px solid var(--bd);
+  border-radius:var(--r);padding:1rem;margin-bottom:.75rem;
+}
+.rev-head{display:flex;align-items:center;gap:.65rem;margin-bottom:.65rem;}
+.rev-av{
+  width:36px;height:36px;border-radius:50%;
+  background:var(--s2);border:1px solid var(--bd2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1rem;flex-shrink:0;overflow:hidden;
+}
+.rev-av img{width:100%;height:100%;object-fit:cover;}
+.rev-name{font-size:.88rem;font-weight:600;color:var(--t1);}
+.rev-meta{font-family:var(--fc);font-size:.75rem;color:var(--t2);}
+.rev-stars{color:var(--gold);font-size:.78rem;margin-left:auto;}
+.rev-book{font-family:var(--fd);font-style:italic;font-size:.82rem;color:var(--blue);margin-bottom:.4rem;}
+.rev-txt{font-size:.85rem;color:var(--t2);line-height:1.6;}
+.rev-foot{display:flex;gap:.85rem;margin-top:.65rem;padding-top:.65rem;border-top:1px solid var(--bd);}
+.rev-act{background:none;border:none;color:var(--t2);font-family:var(--ff);font-size:.78rem;
+  cursor:pointer;display:flex;align-items:center;gap:.25rem;transition:color .15s;}
+.rev-act:hover,.rev-act:active{color:var(--gold);}
+
+.write-box{
+  background:var(--s1);border:1px solid var(--bd);
+  border-radius:var(--r);padding:1rem;margin-bottom:1.1rem;
+}
+.write-box-title{font-family:var(--fd);font-style:italic;font-size:.97rem;color:var(--t1);margin-bottom:.85rem;}
+.write-row{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-bottom:.6rem;}
+@media(max-width:400px){.write-row{grid-template-columns:1fr;}}
+
+.reco-card{
+  background:var(--s1);border:1px solid var(--bd);
+  border-radius:var(--r);padding:1rem;margin-bottom:.75rem;
+  display:flex;gap:1rem;align-items:flex-start;
+  transition:border-color .2s;
+}
+.reco-rank{font-family:var(--fd);font-size:1.4rem;font-weight:600;color:var(--gold2);opacity:.5;width:28px;flex-shrink:0;line-height:1;}
+.reco-body{flex:1;}
+.reco-title{font-family:var(--fd);font-style:italic;font-size:.93rem;color:var(--t1);margin-bottom:.15rem;}
+.reco-auth{font-family:var(--fc);font-size:.8rem;color:var(--t2);}
+.reco-why{font-size:.78rem;color:var(--t2);line-height:1.5;margin-top:.3rem;}
+.vote-btn{
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+  background:rgba(184,133,10,.07);border:1px solid rgba(184,133,10,.15);
+  border-radius:var(--r2);padding:.4rem .6rem;
+  color:var(--gold);font-family:var(--fd);font-size:.85rem;font-weight:600;
+  cursor:pointer;transition:all .15s;flex-shrink:0;
+}
+.vote-btn:active{background:rgba(184,133,10,.15);}
+.vote-ic{font-size:.7rem;}
+
+/* ═══════════════════════════
+   MY PAGE
+═══════════════════════════ */
+/* tasks */
+.task-item{
+  display:flex;align-items:center;gap:.75rem;
+  padding:.8rem .9rem;
+  background:var(--s1);border:1px solid var(--bd);
+  border-radius:var(--r2);margin-bottom:.5rem;
+  cursor:pointer;transition:border-color .15s;
+  -webkit-tap-highlight-color:transparent;
+}
+.task-item.dn{opacity:.5;}
+.task-item:active{background:var(--s2);}
+.tchk2{
+  width:20px;height:20px;border-radius:50%;
+  border:2px solid rgba(255,255,255,.15);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.6rem;color:white;flex-shrink:0;transition:all .2s;
+}
+.task-item.dn .tchk2{background:var(--sage);border-color:var(--sage);}
+.task-txt{flex:1;font-size:.88rem;color:var(--t1);}
+.task-item.dn .task-txt{text-decoration:line-through;color:var(--t3);}
+.task-del{background:none;border:none;color:var(--t3);font-size:.85rem;cursor:pointer;
+  padding:.2rem;border-radius:4px;transition:color .15s;opacity:0;}
+.task-item:hover .task-del,.task-item:active .task-del{opacity:1;}
+
+.add-row{display:flex;gap:.5rem;}
+.add-row input{flex:1;}
+.add-row select{background:var(--s2);border:1px solid var(--bd2);border-radius:var(--r2);
+  padding:.6rem .7rem;color:var(--t1);font-family:var(--ff);font-size:.82rem;outline:none;
+  -webkit-appearance:none;}
+
+.goal-item{
+  background:var(--s1);border:1px solid var(--bd);
+  border-left:3px solid;border-radius:0 var(--r2) var(--r2) 0;
+  padding:.9rem 1rem;margin-bottom:.6rem;
+  transition:transform .2s;
+}
+.goal-item:active{transform:translateX(3px);}
+.goal-name{font-family:var(--fd);font-style:italic;font-size:.93rem;color:var(--t1);margin-bottom:.15rem;}
+.goal-desc{font-size:.78rem;color:var(--t2);line-height:1.4;margin-bottom:.55rem;}
+.goal-foot{display:flex;justify-content:space-between;margin-top:.3rem;}
+
+/* stats */
+.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.75rem;margin-bottom:1.1rem;}
+@media(min-width:480px){.stats-grid{grid-template-columns:repeat(4,1fr);}}
+.scard2{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);padding:1rem;text-align:center;}
+.scard2 .ico{font-size:1.5rem;margin-bottom:.4rem;}
+.scard2 .val{font-family:var(--fd);font-size:1.6rem;font-weight:600;color:var(--t1);}
+.scard2 .lbl{font-family:var(--fc);font-size:.78rem;color:var(--t2);margin-top:.15rem;}
+
+.habit-row{display:flex;align-items:center;gap:.6rem;margin-bottom:.75rem;flex-wrap:wrap;}
+.habit-name{font-size:.82rem;color:var(--t1);width:110px;flex-shrink:0;}
+.hdots{display:flex;gap:4px;}
+.hdot{
+  width:24px;height:24px;border-radius:4px;
+  background:rgba(179,108,255,.07);border:1px solid var(--bd2);
+  display:flex;align-items:center;justify-content:center;font-size:.58rem;
+  cursor:pointer;transition:all .15s;
+}
+.hdot.g{background:rgba(107,143,94,.18);border-color:var(--sage);color:var(--sage);}
+.hdot.y{background:rgba(184,133,10,.15);border-color:var(--gold);color:var(--gold);}
+.hpct{font-family:var(--fc);font-size:.78rem;color:var(--t2);margin-left:auto;}
+
+/* motivation box */
+.motiv-box{
+  background:linear-gradient(135deg,#2a1f58,#3a2a6a);
+  border:1px solid var(--bd2);border-radius:var(--r);
+  padding:1.5rem;text-align:center;
+}
+.motiv-q{font-family:var(--fd);font-style:italic;font-size:1.05rem;color:var(--t1);line-height:1.55;margin-bottom:.5rem;}
+.motiv-a{font-family:var(--fc);color:var(--teal);font-size:.88rem;margin-bottom:1rem;}
+
+/* profile */
+.p-hero{
+  background:linear-gradient(135deg,rgba(184,133,10,.06),rgba(74,124,111,.04));
+  border:1px solid var(--bd);border-radius:var(--r);
+  padding:1.25rem;margin-bottom:1.1rem;
+  display:flex;gap:1.1rem;align-items:flex-start;
+}
+.p-av{
+  width:80px;height:80px;border-radius:50%;
+  border:2px solid var(--gold);padding:2px;flex-shrink:0;position:relative;
+}
+.p-av-inner{
+  width:100%;height:100%;border-radius:50%;
+  background:var(--s2);overflow:hidden;
+  display:flex;align-items:center;justify-content:center;font-size:2rem;
+}
+.p-av-inner img{width:100%;height:100%;object-fit:cover;}
+.p-cam{
+  position:absolute;bottom:1px;right:1px;
+  width:24px;height:24px;border-radius:50%;
+  background:var(--gold);border:2px solid var(--bg);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.6rem;cursor:pointer;
+}
+.p-name{font-family:var(--fd);font-style:italic;font-size:1.35rem;color:var(--t1);}
+.p-tagline{font-family:var(--fc);color:var(--teal);font-size:.88rem;margin:.15rem 0 .5rem;}
+.p-bio{font-size:.82rem;color:var(--t2);line-height:1.6;margin-bottom:.65rem;}
+.p-tags{display:flex;flex-wrap:wrap;gap:.3rem;}
+
+.p-secs{display:grid;grid-template-columns:1fr 1fr;gap:.85rem;}
+@media(max-width:520px){.p-secs{grid-template-columns:1fr;}}
+.p-sec{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);padding:1rem;}
+.p-sec.full{grid-column:1/-1;}
+.p-sec-h{
+  font-family:var(--fd);font-style:italic;font-size:.95rem;color:var(--t1);
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:.85rem;
+}
+.p-add{
+  font-family:var(--fc);font-size:.75rem;color:var(--teal);
+  background:none;border:1px solid rgba(74,124,111,.2);
+  padding:.15rem .55rem;border-radius:10px;cursor:pointer;
+}
+
+.sk-item{margin-bottom:.7rem;}
+.sk-top{display:flex;justify-content:space-between;margin-bottom:.25rem;}
+.sk-n{font-size:.82rem;color:var(--t1);}
+.sk-p{font-family:var(--fc);font-size:.75rem;color:var(--t2);}
+.sk-bar{height:4px;background:rgba(179,108,255,.08);border-radius:2px;overflow:hidden;}
+.sk-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--gold2),var(--blue));}
+
+.ach-item{
+  display:flex;gap:.75rem;align-items:flex-start;
+  padding:.75rem;background:var(--s2);border:1px solid var(--bd);
+  border-radius:var(--r2);margin-bottom:.5rem;
+}
+.ach-ico{font-size:1.35rem;flex-shrink:0;line-height:1;}
+.ach-info h5{font-family:var(--fd);font-style:italic;font-size:.88rem;color:var(--t1);margin-bottom:.1rem;}
+.ach-info p{font-size:.75rem;color:var(--t2);line-height:1.4;}
+.ach-info span{font-family:var(--fc);font-size:.72rem;color:var(--teal);}
+
+.soc-link{
+  display:flex;align-items:center;gap:.6rem;
+  padding:.55rem .75rem;background:var(--s2);border:1px solid var(--bd);
+  border-radius:var(--r2);text-decoration:none;color:var(--t1);font-size:.83rem;
+  margin-bottom:.4rem;transition:border-color .15s;
+}
+.soc-link:hover,.soc-link:active{border-color:var(--gold2);}
+.soc-link span:last-child{margin-left:auto;font-size:.72rem;color:var(--t3);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100px;}
+
+/* ═══════════════════════════
+   ADMIN
+═══════════════════════════ */
+.adm-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.75rem;margin-bottom:1.1rem;}
+@media(min-width:480px){.adm-grid{grid-template-columns:repeat(4,1fr);}}
+
+.tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+table.dt{width:100%;border-collapse:collapse;background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;}
+table.dt th{background:var(--s3);padding:.6rem .85rem;text-align:left;font-size:.72rem;font-weight:600;
+  color:var(--t2);letter-spacing:.04em;text-transform:uppercase;border-bottom:1px solid var(--bd);}
+table.dt td{padding:.65rem .85rem;font-size:.82rem;color:var(--t1);border-bottom:1px solid var(--bd);}
+table.dt tr:last-child td{border-bottom:none;}
+table.dt tr:hover td{background:rgba(179,108,255,.06);}
+.ta{background:none;border:none;cursor:pointer;font-size:.78rem;padding:.2rem .45rem;border-radius:4px;transition:all .15s;}
+.ta-del{color:var(--rose);}.ta-del:hover{background:rgba(192,96,74,.09);}
+.ta-ed{color:var(--blue);}.ta-ed:hover{background:var(--bluel);}
+.dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:.3rem;}
+.dot-g{background:var(--sage);}.dot-y{background:var(--gold);}.dot-r{background:var(--rose);}
+
+/* admin badge */
+.abadge{font-size:.65rem;background:var(--rose2);color:white;padding:.1rem .4rem;border-radius:6px;font-weight:700;}
+
+/* ═══════════════════════════
+   MODAL
+═══════════════════════════ */
+.mo{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,.65);backdrop-filter:blur(8px);
+  z-index:400;align-items:flex-end;justify-content:center;
+  padding:0;
+}
+.mo.open{display:flex;animation:mo-in .22s ease;}
+@media(min-width:500px){.mo{align-items:center;padding:1rem;}}
+@keyframes mo-in{from{opacity:0;}to{opacity:1;}}
+
+.mbox{
+  background:var(--s1);border:1px solid var(--bd2);
+  border-radius:18px 18px 0 0;
+  padding:1.5rem 1.25rem 2rem;
+  width:100%;max-width:480px;
+  max-height:90dvh;overflow-y:auto;
+  animation:mo-slide .25s ease;
+}
+@media(min-width:500px){.mbox{border-radius:18px;padding:1.75rem 1.5rem;}}
+@keyframes mo-slide{from{transform:translateY(30px);}to{transform:translateY(0);}}
+
+.mbox h3{font-family:var(--fd);font-style:italic;font-size:1.25rem;color:var(--t1);margin-bottom:1.25rem;}
+.mactions{display:flex;gap:.6rem;margin-top:1.25rem;}
+.mhandle{
+  width:36px;height:4px;background:var(--s3);border-radius:2px;
+  margin:0 auto .75rem;
+}
+
+/* ═══════════════════════════
+   UTILS
+═══════════════════════════ */
+.mt{margin-top:1rem;}.mb{margin-bottom:1rem;}
+.mt2{margin-top:1.5rem;}
+.empty{text-align:center;font-family:var(--fc);color:var(--t3);font-size:.9rem;padding:2rem;}
+</style>
+</head>
+<body>
+
+<!-- ══════ AUTH ══════ -->
+<div id="auth-screen">
+  <div class="auth-box">
+    <div class="auth-logo">Men<b>Yo</b></div>
+    <div class="auth-sub" id="auth-sub">✦ Shaxsiy rivojlanish platformasi ✦</div>
+    <div class="atabs">
+      <button class="atab on" id="atab-in" onclick="aswitch('in')"></button>
+      <button class="atab" id="atab-up" onclick="aswitch('up')"></button>
+    </div>
+    <!-- login -->
+    <div id="aform-in">
+      <div class="fl"><label id="lbl-email"></label><input class="fi" type="email" id="l-email" autocomplete="email"/></div>
+      <div class="fl"><label id="lbl-pass"></label><input class="fi" type="password" id="l-pass" autocomplete="current-password"/></div>
+      <button class="btn btn-gold btn-full" onclick="doLogin()" id="btn-login"></button>
+      <div class="auth-divider" id="lbl-or"></div>
+      <button class="gbtn" onclick="doLogin()">🌐 <span id="lbl-google"></span></button>
+      <div class="demo-hint" id="lbl-demo"></div>
+    </div>
+    <!-- register -->
+    <div id="aform-up" style="display:none">
+      <div class="fl"><label id="lbl-name"></label><input class="fi" type="text" id="r-name" autocomplete="name"/></div>
+      <div class="fl"><label id="lbl-email2"></label><input class="fi" type="email" id="r-email" autocomplete="email"/></div>
+      <div class="fl"><label id="lbl-pass2"></label><input class="fi" type="password" id="r-pass" autocomplete="new-password"/></div>
+      <button class="btn btn-gold btn-full" onclick="doReg()" id="btn-reg"></button>
+      <div class="auth-divider" id="lbl-or2"></div>
+      <button class="gbtn" onclick="doReg()">🌐 <span id="lbl-google2"></span></button>
+    </div>
+    <div class="auth-footer">
+      <div class="lang-sw">
+        <button class="lang-btn on" onclick="setLang('uz',this)">UZ</button>
+        <button class="lang-btn" onclick="setLang('ru',this)">RU</button>
+        <button class="lang-btn" onclick="setLang('en',this)">EN</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ APP ══════ -->
+<div id="app">
+
+<!-- top nav (desktop) -->
+<nav id="topnav">
+  <div class="tnlogo">Men<b>Yo</b></div>
+  <div class="tnlinks">
+    <button class="tnbtn on" onclick="go('dash',this)" id="tn-dash"></button>
+    <button class="tnbtn" onclick="go('lib',this)" id="tn-lib"></button>
+    <button class="tnbtn" onclick="go('comm',this)" id="tn-comm"></button>
+    <button class="tnbtn" onclick="go('my',this)" id="tn-my"></button>
+    <button class="tnbtn" onclick="go('adm',this)" id="tn-adm" style="display:none"></button>
+  </div>
+  <div class="tnright">
+    <div class="lang-sw">
+      <button class="lang-btn on" onclick="setLang('uz',this)">UZ</button>
+      <button class="lang-btn" onclick="setLang('ru',this)">RU</button>
+      <button class="lang-btn" onclick="setLang('en',this)">EN</button>
+    </div>
+    <div class="nav-av" id="nav-av" onclick="go('my',null);myTab('profile')">
+      <span id="nav-av-e">👤</span>
+      <img id="nav-av-img" src="" style="display:none" alt=""/>
+    </div>
+    <button class="btn btn-ghost btn-sm" onclick="logout()" id="btn-logout"></button>
+  </div>
+</nav>
+
+<!-- bottom nav (mobile) -->
+<nav id="botnav">
+  <button class="bnbtn on" onclick="go('dash',this)" id="bn-dash"><span class="ico">🏠</span><span id="bn-dash-l"></span></button>
+  <button class="bnbtn" onclick="go('lib',this)" id="bn-lib"><span class="ico">📚</span><span id="bn-lib-l"></span></button>
+  <button class="bnbtn" onclick="go('comm',this)" id="bn-comm"><span class="ico">💬</span><span id="bn-comm-l"></span></button>
+  <button class="bnbtn" onclick="go('my',this)" id="bn-my"><span class="ico">🧭</span><span id="bn-my-l"></span></button>
+  <button class="bnbtn" onclick="go('adm',this)" id="bn-adm" style="display:none"><span class="ico">⚙️</span><span id="bn-adm-l"></span></button>
+</nav>
+
+<!-- ── DASHBOARD ── -->
+<div class="pg on" id="pg-dash">
+  <div class="dash-hero">
+    <div class="dash-hi">👋 <span id="d-hi"></span></div>
+    <div class="dash-date" id="d-date"></div>
+  </div>
+  <div class="wrap">
+    <div class="stats-row" id="d-stats"></div>
+    <div class="dash-grid">
+      <div class="card">
+        <div class="sh"><span id="d-tasks-h"></span><button class="sh-act" onclick="go('my',null);myTab('plans')" id="d-all"></button></div>
+        <div id="d-tasks-list"></div>
+      </div>
+      <div class="qcard">
+        <div class="qt" id="d-qt"></div>
+        <div class="qa" id="d-qa"></div>
+        <button class="btn btn-ghost btn-sm mt" onclick="nextQ()" id="d-newq"></button>
+      </div>
+      <div class="card">
+        <div class="sh"><span id="d-books-h"></span><button class="sh-act" onclick="go('lib',null)" id="d-lib-a"></button></div>
+        <div id="d-books-list"></div>
+      </div>
+      <div class="card">
+        <div class="sh" id="d-prog-h"></div>
+        <div class="ring-row">
+          <svg width="64" height="64" viewBox="0 0 64 64" style="transform:rotate(-90deg)">
+            <circle cx="32" cy="32" r="26" fill="none" stroke="rgba(179,108,255,.08)" stroke-width="5"/>
+            <circle id="d-ring" cx="32" cy="32" r="26" fill="none" stroke="url(#rg)" stroke-width="5"
+              stroke-linecap="round" stroke-dasharray="163.4" stroke-dashoffset="163.4"/>
+            <defs><linearGradient id="rg" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#b36cff"/>
+              <stop offset="100%" stop-color="#6a7cff"/>
+            </linearGradient></defs>
+          </svg>
+          <div class="ring-info">
+            <div class="val" id="d-rpct">0%</div>
+            <div class="sub" id="d-rsub"></div>
+          </div>
+        </div>
+        <div style="font-size:.82rem;color:var(--t2);display:flex;justify-content:space-between;">
+          <span id="d-streak-l"></span><b class="gold" id="d-streak-v">7</b>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── LIBRARY ── -->
+<div class="pg" id="pg-lib">
+  <div class="wrap" style="padding-bottom:.5rem">
+    <div class="ptabs" id="lib-tabs">
+      <button class="ptab on" onclick="libTab('books',this)" id="lt-books"></button>
+      <button class="ptab" onclick="libTab('mats',this)" id="lt-mats"></button>
+    </div>
+  </div>
+
+  <div id="lib-books-sec">
+    <div class="wrap" style="padding-top:.5rem;padding-bottom:.5rem">
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap;align-items:center">
+        <div class="search-row" style="flex:1;min-width:160px">
+          <span class="search-ic">🔍</span>
+          <input class="fi" type="search" id="b-search" oninput="renderBooks()" placeholder=""/>
+        </div>
+        <div class="ptabs" style="padding-bottom:0">
+          <button class="ptab on" onclick="bFilter('all',this)" id="bf-all"></button>
+          <button class="ptab" onclick="bFilter('read',this)" id="bf-read"></button>
+          <button class="ptab" onclick="bFilter('reading',this)" id="bf-reading"></button>
+          <button class="ptab" onclick="bFilter('list',this)" id="bf-list"></button>
+        </div>
+        <button class="btn btn-gold btn-sm" onclick="openM('m-book')" id="btn-addbook"></button>
+      </div>
+    </div>
+    <div class="wrap" style="padding-top:.5rem">
+      <div class="books-grid" id="books-grid"></div>
+    </div>
+  </div>
+
+  <div id="lib-mats-sec" style="display:none">
+    <div class="wrap" style="padding-top:.5rem;padding-bottom:.5rem">
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap;align-items:center">
+        <div class="search-row" style="flex:1;min-width:160px">
+          <span class="search-ic">🔍</span>
+          <input class="fi" type="search" id="m-search" oninput="renderMats()" placeholder=""/>
+        </div>
+        <div class="ptabs" style="padding-bottom:0">
+          <button class="ptab on" onclick="mFilter('all',this)" id="mf-all"></button>
+          <button class="ptab" onclick="mFilter('video',this)" id="mf-video"></button>
+          <button class="ptab" onclick="mFilter('article',this)" id="mf-article"></button>
+          <button class="ptab" onclick="mFilter('course',this)" id="mf-course"></button>
+          <button class="ptab" onclick="mFilter('podcast',this)" id="mf-podcast"></button>
+        </div>
+        <button class="btn btn-teal btn-sm" onclick="openM('m-mat')" id="btn-addmat"></button>
+      </div>
+    </div>
+    <div class="wrap" style="padding-top:.5rem">
+      <div class="mat-grid" id="mat-grid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── COMMUNITY ── -->
+<div class="pg" id="pg-comm">
+  <div class="wrap" style="padding-bottom:.5rem">
+    <div class="ptabs">
+      <button class="ptab on" onclick="commTab('reviews',this)" id="ct-rev"></button>
+      <button class="ptab" onclick="commTab('recos',this)" id="ct-rec"></button>
+    </div>
+  </div>
+
+  <div id="comm-rev-sec">
+    <div class="wrap" style="padding-top:.5rem">
+      <div class="write-box">
+        <div class="write-box-title" id="wrt-title"></div>
+        <div class="write-row">
+          <div class="fl" style="margin:0"><label id="wrt-book-l"></label><input class="fi" type="text" id="rv-book"/></div>
+          <div class="fl" style="margin:0"><label id="wrt-rat-l"></label>
+            <select class="fi" id="rv-rat">
+              <option value="5">⭐⭐⭐⭐⭐</option><option value="4">⭐⭐⭐⭐</option>
+              <option value="3">⭐⭐⭐</option><option value="2">⭐⭐</option><option value="1">⭐</option>
+            </select>
+          </div>
+        </div>
+        <div class="fl"><label id="wrt-txt-l"></label><textarea class="fi" id="rv-txt" rows="2"></textarea></div>
+        <button class="btn btn-gold btn-sm" onclick="postRev()" id="btn-postrev"></button>
+      </div>
+      <div id="rev-list"></div>
+    </div>
+  </div>
+
+  <div id="comm-rec-sec" style="display:none">
+    <div class="wrap" style="padding-top:.5rem">
+      <div style="display:flex;justify-content:flex-end;margin-bottom:.85rem">
+        <button class="btn btn-gold btn-sm" onclick="openM('m-reco')" id="btn-addreco"></button>
+      </div>
+      <div id="reco-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── MY PAGE ── -->
+<div class="pg" id="pg-my">
+  <div class="wrap" style="padding-bottom:.5rem">
+    <div class="ptabs">
+      <button class="ptab on" onclick="myTab('plans',this)" id="mt-plans"></button>
+      <button class="ptab" onclick="myTab('stats',this)" id="mt-stats"></button>
+      <button class="ptab" onclick="myTab('profile',this)" id="mt-profile"></button>
+    </div>
+  </div>
+
+  <!-- plans -->
+  <div id="my-plans" class="wrap" style="padding-top:.5rem">
+    <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1rem">
+      <button onclick="dayOff(-1)" style="background:var(--s1);border:1px solid var(--bd2);color:var(--t1);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1rem">‹</button>
+      <div id="day-lbl" style="flex:1;text-align:center;font-family:var(--fd);font-style:italic;color:var(--t1);font-size:1rem;"></div>
+      <button onclick="dayOff(1)" style="background:var(--s1);border:1px solid var(--bd2);color:var(--t1);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1rem">›</button>
+    </div>
+    <div class="card mb">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem">
+        <span class="fc t2" style="font-size:.85rem" id="pln-prog-l"></span>
+        <b class="fd t1" id="pln-pct">0%</b>
+      </div>
+      <div class="pbar"><div class="pfill" id="pln-fill" style="width:0%;background:linear-gradient(90deg,var(--gold2),var(--blue))"></div></div>
+    </div>
+    <div id="task-list"></div>
+    <div class="add-row mt">
+      <input class="fi" type="text" id="new-task" placeholder="" onkeydown="if(event.key==='Enter')addTask()"/>
+      <select class="fi" id="new-cat" style="width:auto">
+        <option value="shaxsiy">✨</option>
+        <option value="kitob">📚</option>
+        <option value="sport">💪</option>
+        <option value="maqsad">🎯</option>
+      </select>
+      <button class="btn btn-gold btn-sm" onclick="addTask()">+</button>
+    </div>
+    <div class="mt2">
+      <div class="sh" id="wg-h"></div>
+      <div id="goals-list"></div>
+    </div>
+  </div>
+
+  <!-- stats -->
+  <div id="my-stats" class="wrap" style="display:none;padding-top:.5rem">
+    <div class="stats-grid" id="stats-cards"></div>
+    <div class="card mb">
+      <div class="sh" id="habit-h"></div>
+      <div id="habits-cont"></div>
+    </div>
+    <div class="motiv-box">
+      <div class="motiv-q" id="motiv-q"></div>
+      <div class="motiv-a" id="motiv-a"></div>
+      <button class="btn btn-ghost btn-sm" onclick="nextQ(true)" id="btn-newq2"></button>
+    </div>
+  </div>
+
+  <!-- profile -->
+  <div id="my-profile" class="wrap" style="display:none;padding-top:.5rem">
+    <div class="p-hero">
+      <div class="p-av">
+        <div class="p-av-inner" id="pav"><span id="pav-e">👤</span></div>
+        <label class="p-cam">📷<input type="file" accept="image/*" style="display:none" onchange="upPic(event)"/></label>
+      </div>
+      <div style="flex:1;min-width:0">
+        <div class="p-name" id="pn"></div>
+        <div class="p-tagline" id="pt"></div>
+        <div class="p-bio" id="pb"></div>
+        <div class="p-tags" id="ptags"></div>
+        <button class="btn btn-ghost btn-sm mt" onclick="openM('m-pedit')" id="btn-pedit"></button>
+      </div>
+    </div>
+    <div class="p-secs">
+      <div class="p-sec">
+        <div class="p-sec-h" id="ps-sk-h"></div>
+        <div id="p-skills"></div>
+      </div>
+      <div class="p-sec">
+        <div class="p-sec-h" id="ps-soc-h"></div>
+        <div id="p-socs"></div>
+      </div>
+      <div class="p-sec full">
+        <div class="p-sec-h" id="ps-ach-h"></div>
+        <div id="p-achs"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── ADMIN ── -->
+<div class="pg" id="pg-adm">
+  <div class="wrap" style="padding-bottom:.5rem">
+    <div class="ptabs">
+      <button class="ptab on" onclick="admTab('overview',this)" id="at-ov"></button>
+      <button class="ptab" onclick="admTab('users',this)" id="at-us"></button>
+      <button class="ptab" onclick="admTab('content',this)" id="at-ct"></button>
+      <button class="ptab" onclick="admTab('mod',this)" id="at-mod"></button>
+    </div>
+  </div>
+  <div class="wrap" style="padding-top:.5rem">
+    <div id="adm-ov">
+      <div class="adm-grid" id="adm-stats-g"></div>
+      <div class="sh mt" id="adm-act-h"></div>
+      <div class="tbl-wrap"><table class="dt" id="adm-act-t"></table></div>
+    </div>
+    <div id="adm-us" style="display:none">
+      <div class="tbl-wrap"><table class="dt" id="adm-us-t"></table></div>
+    </div>
+    <div id="adm-ct" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.85rem">
+        <div class="fd" style="font-style:italic;color:var(--t1)" id="adm-ct-h"></div>
+        <button class="btn btn-gold btn-sm" onclick="openM('m-mat')" id="btn-admaddmat"></button>
+      </div>
+      <div class="tbl-wrap"><table class="dt" id="adm-ct-t"></table></div>
+    </div>
+    <div id="adm-mod" style="display:none">
+      <div id="adm-mod-list"></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /app -->
+
+<!-- ══════ MODALS ══════ -->
+<!-- Book -->
+<div class="mo" id="m-book">
+  <div class="mbox">
+    <div class="mhandle"></div>
+    <h3 id="mb-h"></h3>
+    <div class="fl"><label id="mb-tl"></label><input class="fi" id="mb-title"/></div>
+    <div class="fl"><label id="mb-al"></label><input class="fi" id="mb-auth"/></div>
+    <div class="fl"><label id="mb-sl"></label>
+      <select class="fi" id="mb-status">
+        <option value="read" id="mb-s-read"></option>
+        <option value="reading" id="mb-s-reading"></option>
+        <option value="list" id="mb-s-list"></option>
+      </select>
+    </div>
+    <div class="fl"><label id="mb-rl"></label>
+      <select class="fi" id="mb-rating">
+        <option value="5">⭐⭐⭐⭐⭐</option><option value="4">⭐⭐⭐⭐</option>
+        <option value="3">⭐⭐⭐</option><option value="2">⭐⭐</option><option value="1">⭐</option>
+      </select>
+    </div>
+    <div class="fl"><label id="mb-revl"></label><textarea class="fi" id="mb-rev" rows="2"></textarea></div>
+    <div class="fl"><label id="mb-cl"></label>
+      <select class="fi" id="mb-color">
+        <option value="#e9b84c" id="mb-c1"></option><option value="#3dbfb0" id="mb-c2"></option>
+        <option value="#e87070" id="mb-c3"></option><option value="#72b872" id="mb-c4"></option>
+        <option value="#9b7fe8" id="mb-c5"></option>
+      </select>
+    </div>
+    <div class="mactions">
+      <button class="btn btn-gold" style="flex:1" onclick="saveBook()" id="btn-savebook"></button>
+      <button class="btn btn-ghost" style="flex:1" onclick="closeM('m-book')" id="btn-cancel"></button>
+    </div>
+  </div>
+</div>
+
+<!-- Material -->
+<div class="mo" id="m-mat">
+  <div class="mbox">
+    <div class="mhandle"></div>
+    <h3 id="mm-h"></h3>
+    <div class="fl"><label id="mm-tl"></label><input class="fi" id="mm-title"/></div>
+    <div class="fl"><label id="mm-tyl"></label>
+      <select class="fi" id="mm-type">
+        <option value="video" id="mm-t-video"></option><option value="article" id="mm-t-article"></option>
+        <option value="course" id="mm-t-course"></option><option value="podcast" id="mm-t-podcast"></option>
+      </select>
+    </div>
+    <div class="fl"><label id="mm-al"></label><input class="fi" id="mm-auth"/></div>
+    <div class="fl"><label id="mm-dl"></label><textarea class="fi" id="mm-desc" rows="2"></textarea></div>
+    <div class="fl"><label id="mm-ul"></label><input class="fi" id="mm-url" type="url" placeholder="https://..."/></div>
+    <div class="mactions">
+      <button class="btn btn-teal" style="flex:1" onclick="saveMat()" id="btn-savemat"></button>
+      <button class="btn btn-ghost" style="flex:1" onclick="closeM('m-mat')" id="btn-cancel2"></button>
+    </div>
+  </div>
+</div>
+
+<!-- Reco -->
+<div class="mo" id="m-reco">
+  <div class="mbox">
+    <div class="mhandle"></div>
+    <h3 id="mr-h"></h3>
+    <div class="fl"><label id="mr-tl"></label><input class="fi" id="rc-title"/></div>
+    <div class="fl"><label id="mr-al"></label><input class="fi" id="rc-auth"/></div>
+    <div class="fl"><label id="mr-wl"></label><textarea class="fi" id="rc-why" rows="2"></textarea></div>
+    <div class="fl"><label id="mr-cl"></label>
+      <select class="fi" id="rc-cat">
+        <option value="kitob" id="rc-c1"></option><option value="kurs" id="rc-c2"></option>
+        <option value="video" id="rc-c3"></option><option value="boshqa" id="rc-c4"></option>
+      </select>
+    </div>
+    <div class="mactions">
+      <button class="btn btn-gold" style="flex:1" onclick="saveReco()" id="btn-savereco"></button>
+      <button class="btn btn-ghost" style="flex:1" onclick="closeM('m-reco')" id="btn-cancel3"></button>
+    </div>
+  </div>
+</div>
+
+<!-- Profile edit -->
+<div class="mo" id="m-pedit">
+  <div class="mbox">
+    <div class="mhandle"></div>
+    <h3 id="mp-h"></h3>
+    <div class="fl"><label id="mp-nl"></label><input class="fi" id="pe-name"/></div>
+    <div class="fl"><label id="mp-tgl"></label><input class="fi" id="pe-tag"/></div>
+    <div class="fl"><label id="mp-bl"></label><textarea class="fi" id="pe-bio" rows="2"></textarea></div>
+    <div class="fl"><label id="mp-tsl"></label><input class="fi" id="pe-tags"/></div>
+    <div class="mactions">
+      <button class="btn btn-gold" style="flex:1" onclick="saveProf()" id="btn-saveprof"></button>
+      <button class="btn btn-ghost" style="flex:1" onclick="closeM('m-pedit')" id="btn-cancel4"></button>
+    </div>
+  </div>
+</div>
+
+<!-- Skill -->
+<div class="mo" id="m-skill">
+  <div class="mbox">
+    <div class="mhandle"></div>
+    <h3 id="msk-h"></h3>
+    <div class="fl"><label id="msk-nl"></label><input class="fi" id="sk-name"/></div>
+    <div class="fl"><label id="msk-pl"><span id="sk-pv">70</span>%</label>
+      <input type="range" id="sk-pct" min="10" max="100" step="5" value="70" oninput="document.getElementById('sk-pv').textContent=this.value"/>
+    </div>
+    <div class="mactions">
+      <button class="btn btn-gold" style="flex:1" onclick="saveSkill()" id="btn-savesk"></button>
+      <button class="btn btn-ghost" style="flex:1" onclick="closeM('m-skill')" id="btn-cancel5"></button>
+    </div>
+  </div>
+</div>
+
+<!-- Achievement -->
+<div class="mo" id="m-ach">
+  <div class="mbox">
+    <div class="mhandle"></div>
+    <h3 id="mach-h"></h3>
+    <div class="fl"><label id="mach-tl"></label><input class="fi" id="ach-title"/></div>
+    <div class="fl"><label id="mach-dl"></label><textarea class="fi" id="ach-desc" rows="2"></textarea></div>
+    <div class="fl"><label id="mach-dtl"></label><input class="fi" id="ach-date"/></div>
+    <div class="fl"><label id="mach-il"></label><input class="fi" id="ach-ico" value="🏆" maxlength="4"/></div>
+    <div class="mactions">
+      <button class="btn btn-gold" style="flex:1" onclick="saveAch()" id="btn-saveach"></button>
+      <button class="btn btn-ghost" style="flex:1" onclick="closeM('m-ach')" id="btn-cancel6"></button>
+    </div>
+  </div>
+</div>
+
+<!-- Social -->
+<div class="mo" id="m-soc">
+  <div class="mbox">
+    <div class="mhandle"></div>
+    <h3 id="msoc-h"></h3>
+    <div class="fl"><label id="msoc-nl"></label><input class="fi" id="soc-name"/></div>
+    <div class="fl"><label id="msoc-ul"></label><input class="fi" id="soc-url" type="url" placeholder="https://..."/></div>
+    <div class="fl"><label id="msoc-il"></label><input class="fi" id="soc-ico" value="🔗" maxlength="4"/></div>
+    <div class="mactions">
+      <button class="btn btn-gold" style="flex:1" onclick="saveSoc()" id="btn-savesoc"></button>
+      <button class="btn btn-ghost" style="flex:1" onclick="closeM('m-soc')" id="btn-cancel7"></button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+/* ══════════════════════════════════════
+   I18N — 3 language support
+══════════════════════════════════════ */
+const T={
+  uz:{
+    login:'Kirish',register:"Ro'yxatdan o'tish",email:'Email',password:'Parol',name:"Ism va familiya",
+    google:"Google bilan kirish",demo:"Demo: admin@menyo.uz / admin123",or:'yoki',
+    logout:'Chiqish',
+    dash:'Bosh sahifa',library:'Kutubxona',community:'Jamiyat',mypage:'Sahifam',admin:'Admin',
+    books:'Kitoblar',materials:'Materiallar',reviews:'Fikrlar',recos:'Tavsiyalar',
+    plans:'Rejalar',stats:'Taraqqiyot',profile:'Profil',
+    all:'Barchasi',read:"O'qilgan",reading:'Jarayonda',list:'Rejada',
+    video:'Video',article:'Maqola',course:'Kurs',podcast:'Podkast',
+    addBook:'+ Kitob',addMat:'+ Material',addReco:'+ Tavsiya',
+    bookTitle:'Kitob nomi',author:'Muallif',status:'Holat',rating:'Reyting',review:'Mulohaza',color:'Rang',
+    matTitle:'Sarlavha',type:'Turi',desc:'Tavsif',url:'Havola (URL)',
+    recoTitle:'Kitob / Resurs',why:'Nima uchun tavsiya?',category:'Kategoriya',
+    writeReview:'✍️ Fikr yozing',reviewBook:'Kitob nomi',reviewTxt:'Fikringiz',post:'Joylash →',
+    weeklyGoals:'Haftalik maqsadlar',addTask:'+ Vazifa qo\'shing...',progress:'Kunlik progress',
+    habits:'Odatlar — Bu hafta',newQuote:'✨ Yangi iqtibos',
+    profEdit:'✏️ Tahrirlash',tagline:'Shior / lavha',bio:'Bio',tags:'Teglar (vergul bilan)',
+    skills:'💡 Ko\'nikmalar',achievements:'🏆 Yutuqlar',socials:'🔗 Havolalar',
+    skillName:'Ko\'nikma nomi',level:'Daraja',
+    achTitle:'Sarlavha',achDesc:'Tavsif',achDate:'Sana',achIcon:'Emoji',
+    socName:'Nomi',socUrl:'URL',socIcon:'Emoji',
+    save:'Saqlash',cancel:'Bekor',
+    overviewTab:'Umumiy',usersTab:'Foydalanuvchilar',contentTab:'Kontent',modTab:'Moderatsiya',
+    recentActivity:'So\'nggi faollik',
+    gold:'Oltin',teal:'Ko\'k-yashil',rose:'Qizg\'ish',sage:'Yashil',violet:'Binafsha',
+    hello:'Salom',
+    greetMorning:'Xayrli tong',greetDay:'Xayrli kun',greetEvening:'Xayrli kech',
+    doneLabel:'Vazifalar bajarildi',streakLabel:'🔥 Seriya',
+    allBooks:'Barchasi →',allTasks:'Hammasi →',
+    empty:'Hali hech narsa yo\'q',noResults:'Topilmadi',
+    saved:'✅ Saqlandi!',deleted:'🗑 O\'chirildi',added:'✅ Qo\'shildi!',
+    loginError:'❌ Email yoki parol noto\'g\'ri',fieldRequired:'❌ Maydonni to\'ldiring',
+  },
+  ru:{
+    login:'Войти',register:'Регистрация',email:'Email',password:'Пароль',name:'Имя и фамилия',
+    google:'Войти через Google',demo:'Демо: admin@menyo.uz / admin123',or:'или',
+    logout:'Выйти',
+    dash:'Главная',library:'Библиотека',community:'Сообщество',mypage:'Моя страница',admin:'Админ',
+    books:'Книги',materials:'Материалы',reviews:'Отзывы',recos:'Рекомендации',
+    plans:'Планы',stats:'Прогресс',profile:'Профиль',
+    all:'Все',read:'Прочитано',reading:'Читаю',list:'В списке',
+    video:'Видео',article:'Статья',course:'Курс',podcast:'Подкаст',
+    addBook:'+ Книга',addMat:'+ Материал',addReco:'+ Совет',
+    bookTitle:'Название книги',author:'Автор',status:'Статус',rating:'Рейтинг',review:'Рецензия',color:'Цвет',
+    matTitle:'Заголовок',type:'Тип',desc:'Описание',url:'Ссылка (URL)',
+    recoTitle:'Книга / Ресурс',why:'Почему рекомендуете?',category:'Категория',
+    writeReview:'✍️ Написать отзыв',reviewBook:'Название книги',reviewTxt:'Ваш отзыв',post:'Опубликовать →',
+    weeklyGoals:'Недельные цели',addTask:'+ Добавить задачу...',progress:'Дневной прогресс',
+    habits:'Привычки — Эта неделя',newQuote:'✨ Новая цитата',
+    profEdit:'✏️ Редактировать',tagline:'Слоган',bio:'О себе',tags:'Теги (через запятую)',
+    skills:'💡 Навыки',achievements:'🏆 Достижения',socials:'🔗 Ссылки',
+    skillName:'Название навыка',level:'Уровень',
+    achTitle:'Заголовок',achDesc:'Описание',achDate:'Дата',achIcon:'Эмодзи',
+    socName:'Название',socUrl:'URL',socIcon:'Эмодзи',
+    save:'Сохранить',cancel:'Отмена',
+    overviewTab:'Обзор',usersTab:'Пользователи',contentTab:'Контент',modTab:'Модерация',
+    recentActivity:'Последние действия',
+    gold:'Золотой',teal:'Бирюзовый',rose:'Красноватый',sage:'Зелёный',violet:'Фиолетовый',
+    hello:'Привет',
+    greetMorning:'Доброе утро',greetDay:'Добрый день',greetEvening:'Добрый вечер',
+    doneLabel:'Задачи выполнены',streakLabel:'🔥 Серия',
+    allBooks:'Все →',allTasks:'Все →',
+    empty:'Пока ничего нет',noResults:'Не найдено',
+    saved:'✅ Сохранено!',deleted:'🗑 Удалено',added:'✅ Добавлено!',
+    loginError:'❌ Неверный email или пароль',fieldRequired:'❌ Заполните поле',
+  },
+  en:{
+    login:'Sign in',register:'Sign up',email:'Email',password:'Password',name:'Full name',
+    google:'Continue with Google',demo:'Demo: admin@menyo.uz / admin123',or:'or',
+    logout:'Sign out',
+    dash:'Home',library:'Library',community:'Community',mypage:'My Page',admin:'Admin',
+    books:'Books',materials:'Materials',reviews:'Reviews',recos:'Recommendations',
+    plans:'Plans',stats:'Progress',profile:'Profile',
+    all:'All',read:'Read',reading:'Reading',list:'Wishlist',
+    video:'Video',article:'Article',course:'Course',podcast:'Podcast',
+    addBook:'+ Book',addMat:'+ Material',addReco:'+ Recommend',
+    bookTitle:'Book title',author:'Author',status:'Status',rating:'Rating',review:'Review',color:'Color',
+    matTitle:'Title',type:'Type',desc:'Description',url:'Link (URL)',
+    recoTitle:'Book / Resource',why:'Why do you recommend it?',category:'Category',
+    writeReview:'✍️ Write a review',reviewBook:'Book title',reviewTxt:'Your thoughts',post:'Post →',
+    weeklyGoals:'Weekly goals',addTask:'+ Add task...',progress:'Daily progress',
+    habits:'Habits — This week',newQuote:'✨ New quote',
+    profEdit:'✏️ Edit profile',tagline:'Tagline',bio:'Bio',tags:'Tags (comma separated)',
+    skills:'💡 Skills',achievements:'🏆 Achievements',socials:'🔗 Links',
+    skillName:'Skill name',level:'Level',
+    achTitle:'Title',achDesc:'Description',achDate:'Date',achIcon:'Emoji',
+    socName:'Name',socUrl:'URL',socIcon:'Emoji',
+    save:'Save',cancel:'Cancel',
+    overviewTab:'Overview',usersTab:'Users',contentTab:'Content',modTab:'Moderation',
+    recentActivity:'Recent activity',
+    gold:'Gold',teal:'Teal',rose:'Rose',sage:'Green',violet:'Violet',
+    hello:'Hello',
+    greetMorning:'Good morning',greetDay:'Good afternoon',greetEvening:'Good evening',
+    doneLabel:'Tasks done',streakLabel:'🔥 Streak',
+    allBooks:'All →',allTasks:'All →',
+    empty:'Nothing here yet',noResults:'No results',
+    saved:'✅ Saved!',deleted:'🗑 Deleted',added:'✅ Added!',
+    loginError:'❌ Wrong email or password',fieldRequired:'❌ Fill in the field',
+  }
+};
+
+let lang='uz';
+const t=k=>T[lang][k]||k;
+
+const QUOTES={
+  uz:[
+    {q:"Yuz marta eshitgandan ko'ra bir marta ko'rgan yaxshi.",a:"Xitoy maqoli"},
+    {q:"Bugun qilmagan narsangizni ertaga qilish qiyinroq.",a:"Atom Odatlar"},
+    {q:"O'qimasdan o'tgan kun — yo'qolgan kun.",a:"Dono maqol"},
+    {q:"Katta maqsadlarga kichik qadamlar bilan erishiladi.",a:"Konfutsiy"},
+    {q:"Eng yaxshi investitsiya — o'z-o'zingga qilingandir.",a:"B. Franklin"},
+    {q:"Har kuni bir oz yaxshilanish — bu hamma narsani o'zgartiradi.",a:"James Clear"},
+  ],
+  ru:[
+    {q:"Лучше один раз увидеть, чем сто раз услышать.",a:"Китайская пословица"},
+    {q:"Что откладываешь на завтра — делать труднее.",a:"Atomic Habits"},
+    {q:"День без книги — день потерянный.",a:"Мудрость"},
+    {q:"Великие цели достигаются маленькими шагами.",a:"Конфуций"},
+    {q:"Лучшая инвестиция — в себя.",a:"Б. Франклин"},
+  ],
+  en:[
+    {q:"An investment in knowledge pays the best interest.",a:"B. Franklin"},
+    {q:"Small habits make big differences.",a:"James Clear"},
+    {q:"A book a day keeps ignorance away.",a:"Wisdom"},
+    {q:"The secret of getting ahead is getting started.",a:"Mark Twain"},
+    {q:"Don't count the days, make the days count.",a:"Muhammad Ali"},
+  ]
+};
+let qIdx=0;
+
+/* ── DATA ── */
+let books=JSON.parse(localStorage.getItem('MY_books')||'null')||[
+  {id:1,title:"Atom Odatlar",author:"James Clear",status:"read",rating:5,review:"Odatlar haqida eng yaxshi kitob. Kichik qadamlar katta o'zgarishlar yaratadi.",color:"#e9b84c"},
+  {id:2,title:"Sapiens",author:"Y. N. Harari",status:"read",rating:5,review:"Insoniyat tarixi haqida hayratlanarli narativ.",color:"#3dbfb0"},
+  {id:3,title:"Deep Work",author:"Cal Newport",status:"reading",rating:4,review:"Chuqur diqqat va unumdorlik haqida.",color:"#72b872"},
+  {id:4,title:"Qora Oqqush",author:"N. Taleb",status:"list",rating:0,review:"",color:"#9b7fe8"},
+];
+let mats=JSON.parse(localStorage.getItem('MY_mats')||'null')||[
+  {id:1,title:"Feynman Technique",type:"video",author:"Thomas Frank",desc:"Istalgan narsani tezkor o'rganish usuli.",url:"https://youtube.com"},
+  {id:2,title:"Learning How to Learn",type:"course",author:"Coursera",desc:"Eng mashhur onlayn kurs. O'qish psixologiyasi.",url:"https://coursera.org"},
+  {id:3,title:"Huberman Lab",type:"podcast",author:"Andrew Huberman",desc:"Ilm-fan asosida sog'liq va unumdorlik.",url:"#"},
+  {id:4,title:"Nega kitob o'qish hayotni o'zgartiradi",type:"article",author:"Redaksiya",desc:"Kitob o'qishning miyaga ta'siri.",url:"#"},
+];
+let tasks=JSON.parse(localStorage.getItem('MY_tasks')||'null')||[
+  {id:1,text:"30 daqiqa kitob o'qish",cat:"kitob",done:false},
+  {id:2,text:"30 daqiqa yugurish",cat:"sport",done:true},
+  {id:3,text:"Kundalik yozish",cat:"shaxsiy",done:false},
+];
+let revs=JSON.parse(localStorage.getItem('MY_revs')||'null')||[
+  {id:1,user:"Sardor T.",av:"👨‍💻",avImg:null,book:"Atom Odatlar",rat:5,txt:"Hayotimni o'zgartirgan kitob! Kichik odatlar haqidagi g'oyalar juda chuqur fikrlashga majbur qildi.",likes:12,date:"2024-03-15"},
+  {id:2,user:"Malika R.",av:"👩‍🎓",avImg:null,book:"Sapiens",rat:5,txt:"Yuval Harari insoniyat tarixini juda qiziqarli tarzda yozibdi.",likes:8,date:"2024-03-10"},
+];
+let recos=JSON.parse(localStorage.getItem('MY_recos')||'null')||[
+  {id:1,title:"Deep Work",author:"Cal Newport",why:"Diqqatni jamlash bo'yicha eng yaxshi manba.",cat:"kitob",votes:24},
+  {id:2,title:"Ali Abdaal YouTube",author:"Ali Abdaal",why:"Unumdorlik bo'yicha foydali videolar.",cat:"video",votes:19},
+];
+let prof=JSON.parse(localStorage.getItem('MY_prof')||'null')||{
+  name:"Ismingiz",tagline:"✦ Shaxsiy rivojlanish ✦",
+  bio:"O'zingiz haqingizda yozing...",tags:[],av:null,
+  skills:[{name:"Muloqot",pct:80},{name:"Rejalashtirish",pct:70}],
+  achievements:[{ico:"📚",title:"Birinchi 10 kitob",desc:"Bir yil ichida 10 kitob o'qildi.",date:"2024"}],
+  socials:[{ico:"📬",name:"Telegram",url:"https://t.me/"}],
+};
+const wGoals=[
+  {name:"5 bob o'qish",desc:"Atom Odatlarni tugatish",prog:60,c:"#e9b84c"},
+  {name:"Haftada 4 marta sport",desc:"Yugurish yoki gym",prog:50,c:"#3dbfb0"},
+  {name:"Inglizcha 30 daqiqa",desc:"Har kuni podcast",prog:71,c:"#72b872"},
+];
+const habits=[
+  {n:"📚 Kitob",days:[1,1,1,0,1,1,0],c:"y"},
+  {n:"💪 Sport",days:[1,0,1,1,1,0,1],c:"g"},
+  {n:"✍️ Yozish",days:[1,1,0,1,0,1,1],c:"g"},
+  {n:"🧘 Meditatsiya",days:[0,1,1,0,1,1,0],c:"y"},
+];
+
+const DEMO_USERS=[
+  {email:"admin@menyo.uz",pass:"admin123",name:"Admin",isAdmin:true},
+  {email:"user@menyo.uz",pass:"user123",name:"Foydalanuvchi",isAdmin:false},
+];
+let curUser=null;
+let _dayOff=0;
+let bFil='all',mFil='all';
+
+function sv(k,v){localStorage.setItem(k,JSON.stringify(v));}
+
+/* ── LANG ── */
+function setLang(l,el){
+  lang=l;
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('on',b.textContent===l.toUpperCase()));
+  applyLang();
+  qIdx=0;
+  renderAll();
+}
+function applyLang(){
+  // auth
+  _t('atab-in',t('login'));_t('atab-up',t('register'));
+  _t('lbl-email',t('email'));_t('lbl-pass',t('password'));
+  _t('btn-login',t('login'));_t('lbl-or',t('or'));
+  _t('lbl-google',t('google'));_t('lbl-demo',t('demo'));
+  _t('lbl-email2',t('email'));_t('lbl-pass2',t('password'));_t('lbl-name',t('name'));
+  _t('btn-reg',t('register'));_t('lbl-or2',t('or'));
+  _t('lbl-google2',t('google'));
+  // nav
+  _t('tn-dash','🏠 '+t('dash'));_t('tn-lib','📚 '+t('library'));
+  _t('tn-comm','💬 '+t('community'));_t('tn-my','🧭 '+t('mypage'));
+  _t('tn-adm','⚙️ '+t('admin'));_t('btn-logout',t('logout'));
+  _t('bn-dash-l',t('dash'));_t('bn-lib-l',t('library'));
+  _t('bn-comm-l',t('community'));_t('bn-my-l',t('mypage'));_t('bn-adm-l',t('admin'));
+  // library
+  _t('lt-books','📚 '+t('books'));_t('lt-mats','🎓 '+t('materials'));
+  _t('bf-all',t('all'));_t('bf-read','✅ '+t('read'));
+  _t('bf-reading','📖 '+t('reading'));_t('bf-list','📋 '+t('list'));
+  _t('btn-addbook',t('addBook'));
+  _t('mf-all',t('all'));_t('mf-video','🎬 '+t('video'));_t('mf-article','📄 '+t('article'));
+  _t('mf-course','🎓 '+t('course'));_t('mf-podcast','🎙 '+t('podcast'));
+  _t('btn-addmat',t('addMat'));
+  // community
+  _t('ct-rev','💬 '+t('reviews'));_t('ct-rec','⭐ '+t('recos'));
+  _t('wrt-title',t('writeReview'));_t('wrt-book-l',t('reviewBook'));
+  _t('wrt-rat-l',t('rating'));_t('wrt-txt-l',t('reviewTxt'));_t('btn-postrev',t('post'));
+  _t('btn-addreco',t('addReco'));
+  // mypage
+  _t('mt-plans','🗓 '+t('plans'));_t('mt-stats','📊 '+t('stats'));_t('mt-profile','👤 '+t('profile'));
+  _t('pln-prog-l',t('progress'));_t('wg-h',t('weeklyGoals'));
+  const nt=document.getElementById('new-task');if(nt)nt.placeholder=t('addTask');
+  _t('habit-h',t('habits'));_t('btn-newq2',t('newQuote'));
+  _t('btn-pedit',t('profEdit'));
+  _t('ps-sk-h','💡 '+t('skills')+'<button class="p-add" onclick="openM(\'m-skill\')">'+(t('save')==='Save'?'+ add':'+ qo\'shish')+'</button>');
+  document.getElementById('ps-sk-h').innerHTML='💡 '+t('skills')+'<button class="p-add" onclick="openM(\'m-skill\')">+</button>';
+  document.getElementById('ps-soc-h').innerHTML='🔗 '+t('socials')+'<button class="p-add" onclick="openM(\'m-soc\')">+</button>';
+  document.getElementById('ps-ach-h').innerHTML='🏆 '+t('achievements')+'<button class="p-add" onclick="openM(\'m-ach\')">+</button>';
+  // modals
+  _t('mb-h',t('addBook'));_t('mb-tl',t('bookTitle'));_t('mb-al',t('author'));
+  _t('mb-sl',t('status'));_t('mb-rl',t('rating'));_t('mb-revl',t('review'));_t('mb-cl',t('color'));
+  _t('mb-s-read','✅ '+t('read'));_t('mb-s-reading','📖 '+t('reading'));_t('mb-s-list','📋 '+t('list'));
+  _t('mb-c1',t('gold'));_t('mb-c2',t('teal'));_t('mb-c3',t('rose'));_t('mb-c4',t('sage'));_t('mb-c5',t('violet'));
+  _t('btn-savebook',t('save'));document.querySelectorAll('#btn-cancel,#btn-cancel2,#btn-cancel3,#btn-cancel4,#btn-cancel5,#btn-cancel6,#btn-cancel7').forEach(b=>{if(b)b.textContent=t('cancel');});
+  _t('mm-h',t('addMat'));_t('mm-tl',t('matTitle'));_t('mm-tyl',t('type'));_t('mm-al',t('author'));
+  _t('mm-dl',t('desc'));_t('mm-ul',t('url'));
+  _t('mm-t-video',t('video'));_t('mm-t-article',t('article'));_t('mm-t-course',t('course'));_t('mm-t-podcast',t('podcast'));
+  _t('btn-savemat',t('save'));
+  _t('mr-h',t('addReco'));_t('mr-tl',t('recoTitle'));_t('mr-al',t('author'));_t('mr-wl',t('why'));_t('mr-cl',t('category'));
+  _t('rc-c1',t('books'));_t('rc-c2',t('course'));_t('rc-c3',t('video'));_t('rc-c4',t('all'));
+  _t('btn-savereco',t('save'));
+  _t('mp-h',t('profEdit'));_t('mp-nl',t('name'));_t('mp-tgl',t('tagline'));_t('mp-bl',t('bio'));_t('mp-tsl',t('tags'));
+  _t('btn-saveprof',t('save'));
+  _t('msk-h',t('skills'));_t('msk-nl',t('skillName'));_t('msk-pl',t('level')+': ');
+  _t('btn-savesk',t('save'));
+  _t('mach-h',t('achievements'));_t('mach-tl',t('achTitle'));_t('mach-dl',t('achDesc'));
+  _t('mach-dtl',t('achDate'));_t('mach-il',t('achIcon'));_t('btn-saveach',t('save'));
+  _t('msoc-h',t('socials'));_t('msoc-nl',t('socName'));_t('msoc-ul',t('socUrl'));_t('msoc-il',t('socIcon'));_t('btn-savesoc',t('save'));
+  // admin
+  _t('at-ov',t('overviewTab'));_t('at-us',t('usersTab'));_t('at-ct',t('contentTab'));_t('at-mod',t('modTab'));
+  _t('adm-ct-h',t('contentTab'));_t('btn-admaddmat',t('addMat'));
+  _t('adm-act-h',t('recentActivity'));
+  // dashboard dynamic labels
+  _t('d-rsub',t('doneLabel'));
+}
+function _t(id,v){const e=document.getElementById(id);if(e)e.textContent=v;}
+
+/* ── AUTH ── */
+function aswitch(tab){
+  document.getElementById('aform-in').style.display=tab==='in'?'':'none';
+  document.getElementById('aform-up').style.display=tab==='up'?'':'none';
+  document.getElementById('atab-in').classList.toggle('on',tab==='in');
+  document.getElementById('atab-up').classList.toggle('on',tab==='up');
+}
+function doLogin(){
+  const email=document.getElementById('l-email').value.trim();
+  const pass=document.getElementById('l-pass').value;
+  const u=DEMO_USERS.find(u=>u.email===email&&u.pass===pass)||
+          (email&&pass?{email,pass,name:email.split('@')[0],isAdmin:false}:null);
+  if(!u){toast(t('loginError'));return;}
+  loginOk(u);
+}
+function doReg(){
+  const name=document.getElementById('r-name').value.trim();
+  if(!name){toast(t('fieldRequired'));return;}
+  const u={email:document.getElementById('r-email').value,pass:document.getElementById('r-pass').value,name,isAdmin:false};
+  DEMO_USERS.push(u);loginOk(u);
+}
+function loginOk(u){
+  curUser=u;
+  document.getElementById('auth-screen').style.display='none';
+  document.getElementById('app').classList.add('on');
+  if(u.isAdmin){document.getElementById('tn-adm').style.display='';document.getElementById('bn-adm').style.display='';}
+  if(prof.name==='Ismingiz') prof.name=u.name;
+  applyLang();renderAll();
+}
+function logout(){
+  curUser=null;
+  document.getElementById('auth-screen').style.display='flex';
+  document.getElementById('app').classList.remove('on');
+}
+
+/* ── NAV ── */
+function go(id,el){
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tnbtn,.bnbtn').forEach(b=>b.classList.remove('on'));
+  document.getElementById('pg-'+id).classList.add('on');
+  if(el) el.classList.add('on');
+  // sync both navs
+  const tn=document.getElementById('tn-'+id);if(tn)tn.classList.add('on');
+  const bn=document.getElementById('bn-'+id);if(bn)bn.classList.add('on');
+  if(id==='lib'){renderBooks();renderMats();}
+  if(id==='comm'){renderRevs();renderRecos();}
+  if(id==='my'){renderTasks();renderGoals();renderStats();renderProf();}
+  if(id==='adm') renderAdm();
+  if(id==='dash') renderDash();
+}
+function libTab(t2,el){
+  document.querySelectorAll('#lib-tabs .ptab').forEach(b=>b.classList.remove('on'));
+  if(el)el.classList.add('on');
+  document.getElementById('lib-books-sec').style.display=t2==='books'?'':'none';
+  document.getElementById('lib-mats-sec').style.display=t2==='mats'?'':'none';
+}
+function commTab(t2,el){
+  document.querySelectorAll('#pg-comm .ptab').forEach(b=>b.classList.remove('on'));
+  if(el)el.classList.add('on');
+  document.getElementById('comm-rev-sec').style.display=t2==='reviews'?'':'none';
+  document.getElementById('comm-rec-sec').style.display=t2==='recos'?'':'none';
+}
+function myTab(tab,el){
+  document.querySelectorAll('#pg-my .ptab').forEach(b=>b.classList.remove('on'));
+  if(el){ el.classList.add('on'); }
+  else {
+    const idx={plans:0,stats:1,profile:2}[tab]??0;
+    const tabs=document.querySelectorAll('#pg-my .ptab');
+    if(tabs[idx]) tabs[idx].classList.add('on');
+  }
+  document.getElementById('my-plans').style.display=tab==='plans'?'':'none';
+  document.getElementById('my-stats').style.display=tab==='stats'?'':'none';
+  document.getElementById('my-profile').style.display=tab==='profile'?'':'none';
+}
+function admTab(t2,el){
+  document.querySelectorAll('#pg-adm .ptab').forEach(b=>b.classList.remove('on'));
+  if(el)el.classList.add('on');
+  ['ov','us','ct','mod'].forEach(k=>{
+    const e=document.getElementById('adm-'+k);if(e)e.style.display=k===t2?'':'none';
+  });
+  renderAdm();
+}
+
+/* ── DASHBOARD ── */
+const DAYS={uz:['Yakshanba','Dushanba','Seshanba','Chorshanba','Payshanba','Juma','Shanba'],ru:['Воскресенье','Понедельник','Вторник','Среда','Четверг','Пятница','Суббота'],en:['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']};
+const MONTHS={uz:['Yanvar','Fevral','Mart','Aprel','May','Iyun','Iyul','Avgust','Sentyabr','Oktyabr','Noyabr','Dekabr'],ru:['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'],en:['January','February','March','April','May','June','July','August','September','October','November','December']};
+
+function renderDash(){
+  const now=new Date();
+  const h=now.getHours();
+  const greet=h<12?t('greetMorning'):h<18?t('greetDay'):t('greetEvening');
+  const uname=curUser?curUser.name.split(' ')[0]:(t('hello'));
+  document.getElementById('d-hi').textContent=greet+', '+uname+' 👋';
+  document.getElementById('d-date').textContent=DAYS[lang][now.getDay()]+', '+now.getDate()+' '+MONTHS[lang][now.getMonth()]+' '+now.getFullYear();
+
+  const readCnt=books.filter(b=>b.status==='read').length;
+  const doneCnt=tasks.filter(t2=>t2.done).length;
+  const pct=tasks.length?Math.round(doneCnt/tasks.length*100):0;
+
+  document.getElementById('d-stats').innerHTML=`
+    <div class="scard c-gold"><div class="scard-n">${readCnt}</div><div class="scard-l">📚 ${t('books')}</div></div>
+    <div class="scard c-teal"><div class="scard-n">${doneCnt}</div><div class="scard-l">✅ ${t('doneLabel')}</div></div>
+    <div class="scard c-rose"><div class="scard-n">7</div><div class="scard-l">🔥 ${t('streakLabel')}</div></div>
+    <div class="scard c-sage"><div class="scard-n">${mats.length}</div><div class="scard-l">🎓 ${t('materials')}</div></div>
+  `;
+
+  document.getElementById('d-tasks-h').textContent=t('plans');
+  document.getElementById('d-all').textContent=t('allTasks');
+  document.getElementById('d-tasks-list').innerHTML=tasks.slice(0,3).map(t2=>`
+    <div class="trow-mini">
+      <div class="tchk ${t2.done?'dn':''}">${t2.done?'✓':''}</div>
+      <span class="${t2.done?'dn':''}">${t2.text}</span>
+    </div>
+  `).join('')+`<div class="fc t2" style="font-size:.78rem;margin-top:.4rem">${pct}% ${t('doneLabel').toLowerCase()}</div>`;
+
+  document.getElementById('d-books-h').textContent=t('books');
+  document.getElementById('d-lib-a').textContent=t('allBooks');
+  document.getElementById('d-books-list').innerHTML=books.slice(0,3).map(b=>`
+    <div class="brow">
+      <div class="brow-bar" style="background:${b.color}"></div>
+      <div><div class="brow-title">${b.title}</div><div class="brow-author">${b.author}</div></div>
+    </div>
+  `).join('');
+
+  // ring
+  const offset=163.4-(pct/100)*163.4;
+  document.getElementById('d-ring').style.strokeDashoffset=offset;
+  document.getElementById('d-rpct').textContent=pct+'%';
+  document.getElementById('d-rsub').textContent=t('doneLabel');
+  document.getElementById('d-streak-l').textContent=t('streakLabel');
+  const dph=document.getElementById('d-prog-h');
+  if(dph) dph.textContent=t('stats');
+
+  renderQ();
+}
+function renderQ(){
+  const qs=QUOTES[lang]||QUOTES.uz;
+  const q=qs[qIdx%qs.length];
+  _t('d-qt','"'+q.q+'"');_t('d-qa','— '+q.a);
+  _t('d-newq',t('newQuote'));
+}
+function nextQ(fromStats=false){
+  qIdx=(qIdx+1)%(QUOTES[lang]||QUOTES.uz).length;
+  renderQ();
+  if(fromStats){
+    const q=(QUOTES[lang]||QUOTES.uz)[qIdx];
+    _t('motiv-q','"'+q.q+'"');_t('motiv-a','— '+q.a);
+  }
+}
+
+/* ── BOOKS ── */
+function renderBooks(){
+  const q=(document.getElementById('b-search')||{value:''}).value.toLowerCase();
+  const filtered=books.filter(b=>(bFil==='all'||b.status===bFil)&&(!q||b.title.toLowerCase().includes(q)||b.author.toLowerCase().includes(q)));
+  const chipMap={read:`chip-sage`,reading:`chip-gold`,list:`chip-dim`};
+  const lblMap=()=>({read:'✅ '+t('read'),reading:'📖 '+t('reading'),list:'📋 '+t('list')});
+  document.getElementById('books-grid').innerHTML=filtered.length?filtered.map(b=>`
+    <div class="bcard">
+      <div class="bcard-spine" style="background:${b.color}"></div>
+      <div class="bcard-body">
+        <div class="bcard-title">${b.title}</div>
+        <div class="bcard-auth">— ${b.author}</div>
+        ${b.rating?`<div class="bcard-stars">${'⭐'.repeat(b.rating)}</div>`:''}
+        ${b.review?`<div class="bcard-rev">${b.review}</div>`:''}
+        <span class="chip ${chipMap[b.status]}">${lblMap()[b.status]}</span>
+      </div>
+    </div>
+  `).join(''):`<div class="empty" style="grid-column:1/-1">${t('noResults')}</div>`;
+}
+function bFilter(f,el){
+  bFil=f;
+  document.querySelectorAll('#lib-books-sec .ptab').forEach(b=>b.classList.remove('on'));
+  if(el)el.classList.add('on');
+  renderBooks();
+}
+function saveBook(){
+  const title=document.getElementById('mb-title').value.trim();
+  if(!title){toast(t('fieldRequired'));return;}
+  books.unshift({id:Date.now(),title,
+    author:document.getElementById('mb-auth').value.trim()||'—',
+    status:document.getElementById('mb-status').value,
+    rating:+document.getElementById('mb-rating').value,
+    review:document.getElementById('mb-rev').value.trim(),
+    color:document.getElementById('mb-color').value,
+  });
+  sv('MY_books',books);closeM('m-book');
+  ['mb-title','mb-auth','mb-rev'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+  renderBooks();renderDash();toast(t('added'));
+}
+
+/* ── MATERIALS ── */
+const MTYPE_CHIP={video:'chip-rose',article:'chip-teal',course:'chip-gold',podcast:'chip-sage'};
+const MTYPE_ICO={video:'🎬',article:'📄',course:'🎓',podcast:'🎙'};
+function renderMats(){
+  const q=(document.getElementById('m-search')||{value:''}).value.toLowerCase();
+  const filtered=mats.filter(m=>(mFil==='all'||m.type===mFil)&&(!q||m.title.toLowerCase().includes(q)));
+  document.getElementById('mat-grid').innerHTML=filtered.length?filtered.map(m=>`
+    <div class="mcard">
+      <span class="chip ${MTYPE_CHIP[m.type]||'chip-dim'}">${MTYPE_ICO[m.type]||'📄'} ${t(m.type)||m.type}</span>
+      <div class="mcard-title">${m.title}</div>
+      <div class="mcard-desc">${m.desc}</div>
+      <div class="mcard-foot">
+        <span class="mcard-auth">${m.author}</span>
+        ${m.url&&m.url!=='#'?`<a class="mcard-link" href="${m.url}" target="_blank">→</a>`:''}
+      </div>
+    </div>
+  `).join(''):`<div class="empty" style="grid-column:1/-1">${t('noResults')}</div>`;
+}
+function mFilter(f,el){
+  mFil=f;
+  document.querySelectorAll('#lib-mats-sec .ptab').forEach(b=>b.classList.remove('on'));
+  if(el)el.classList.add('on');
+  renderMats();
+}
+function saveMat(){
+  const title=document.getElementById('mm-title').value.trim();
+  if(!title){toast(t('fieldRequired'));return;}
+  mats.unshift({id:Date.now(),title,
+    type:document.getElementById('mm-type').value,
+    author:document.getElementById('mm-auth').value.trim(),
+    desc:document.getElementById('mm-desc').value.trim(),
+    url:document.getElementById('mm-url').value.trim()||'#',
+  });
+  sv('MY_mats',mats);closeM('m-mat');
+  ['mm-title','mm-auth','mm-desc','mm-url'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+  renderMats();renderDash();toast(t('added'));
+}
+
+/* ── REVIEWS ── */
+function renderRevs(){
+  document.getElementById('rev-list').innerHTML=revs.map(r=>`
+    <div class="rev-card">
+      <div class="rev-head">
+        <div class="rev-av">${r.avImg?`<img src="${r.avImg}"/>`:(r.av||'👤')}</div>
+        <div><div class="rev-name">${r.user}</div><div class="rev-meta">${r.date}</div></div>
+        <div class="rev-stars">${'⭐'.repeat(r.rat)}</div>
+      </div>
+      <div class="rev-book">📚 ${r.book}</div>
+      <div class="rev-txt">${r.txt}</div>
+      <div class="rev-foot">
+        <button class="rev-act" onclick="likeRev(${r.id})">👍 ${r.likes}</button>
+        <button class="rev-act">💬</button>
+      </div>
+    </div>
+  `).join('')||`<div class="empty">${t('empty')}</div>`;
+}
+function likeRev(id){const r=revs.find(r=>r.id===id);if(r){r.likes++;sv('MY_revs',revs);renderRevs();}}
+function postRev(){
+  const book=document.getElementById('rv-book').value.trim();
+  const txt=document.getElementById('rv-txt').value.trim();
+  if(!book||!txt){toast(t('fieldRequired'));return;}
+  revs.unshift({id:Date.now(),user:curUser?curUser.name:'Mehmon',av:'👤',avImg:prof.av,book,
+    rat:+document.getElementById('rv-rat').value,txt,likes:0,
+    date:new Date().toLocaleDateString()});
+  sv('MY_revs',revs);
+  ['rv-book','rv-txt'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+  renderRevs();toast(t('added'));
+}
+
+/* ── RECOS ── */
+const catColors={kitob:'chip-gold',kurs:'chip-teal',video:'chip-rose',boshqa:'chip-dim'};
+function renderRecos(){
+  document.getElementById('reco-list').innerHTML=recos.map((r,i)=>`
+    <div class="reco-card">
+      <div class="reco-rank">${String(i+1).padStart(2,'0')}</div>
+      <div class="reco-body">
+        <div class="reco-title">${r.title}</div>
+        <div class="reco-auth">— ${r.author}</div>
+        <div class="reco-why">${r.why}</div>
+        <span class="chip ${catColors[r.cat]||'chip-dim'}" style="margin-top:.4rem;display:inline-flex">${r.cat}</span>
+      </div>
+      <button class="vote-btn" onclick="voteReco(${r.id})">
+        <span class="vote-ic">▲</span>${r.votes}
+      </button>
+    </div>
+  `).join('')||`<div class="empty">${t('empty')}</div>`;
+}
+function voteReco(id){
+  const r=recos.find(r=>r.id===id);
+  if(r){r.votes++;recos.sort((a,b)=>b.votes-a.votes);sv('MY_recos',recos);renderRecos();}
+}
+function saveReco(){
+  const title=document.getElementById('rc-title').value.trim();
+  if(!title){toast(t('fieldRequired'));return;}
+  recos.unshift({id:Date.now(),title,
+    author:document.getElementById('rc-auth').value.trim()||'—',
+    why:document.getElementById('rc-why').value.trim(),
+    cat:document.getElementById('rc-cat').value,votes:1});
+  recos.sort((a,b)=>b.votes-a.votes);
+  sv('MY_recos',recos);closeM('m-reco');
+  ['rc-title','rc-auth','rc-why'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+  renderRecos();toast(t('added'));
+}
+
+/* ── TASKS / PLANS ── */
+function setDayLabel(){
+  const d=new Date();d.setDate(d.getDate()+_dayOff);
+  document.getElementById('day-lbl').textContent=DAYS[lang][d.getDay()]+', '+d.getDate()+' '+MONTHS[lang][d.getMonth()];
+}
+function dayOff2(dir){_dayOff+=dir;setDayLabel();renderTasks();}
+window.dayOff=dayOff2; // expose
+
+function renderTasks(){
+  const done=tasks.filter(t2=>t2.done).length;
+  const total=tasks.length;
+  const pct=total?Math.round(done/total*100):0;
+  document.getElementById('pln-pct').textContent=pct+'%';
+  document.getElementById('pln-fill').style.width=pct+'%';
+  const catIco={kitob:'📚',sport:'💪',maqsad:'🎯',shaxsiy:'✨'};
+  const catCls={kitob:'chip-gold',sport:'chip-sage',maqsad:'chip-rose',shaxsiy:'chip-teal'};
+  document.getElementById('task-list').innerHTML=tasks.map(t2=>`
+    <div class="task-item ${t2.done?'dn':''}" onclick="toggleTask(${t2.id})">
+      <div class="tchk2">${t2.done?'✓':''}</div>
+      <div class="task-txt">${t2.text}</div>
+      <span class="chip ${catCls[t2.cat]||'chip-dim'}" style="font-size:.72rem">${catIco[t2.cat]||'✨'}</span>
+      <button class="task-del" onclick="event.stopPropagation();delTask(${t2.id})">✕</button>
+    </div>
+  `).join('')||`<div class="empty">${t('empty')}</div>`;
+}
+function toggleTask(id){const t2=tasks.find(t=>t.id===id);if(t2){t2.done=!t2.done;sv('MY_tasks',tasks);renderTasks();renderDash();}}
+function delTask(id){tasks=tasks.filter(t=>t.id!==id);sv('MY_tasks',tasks);renderTasks();}
+function addTask(){
+  const inp=document.getElementById('new-task');
+  const txt=inp.value.trim();if(!txt)return;
+  tasks.push({id:Date.now(),text:txt,cat:document.getElementById('new-cat').value,done:false});
+  inp.value='';sv('MY_tasks',tasks);renderTasks();
+}
+function renderGoals(){
+  document.getElementById('goals-list').innerHTML=wGoals.map(g=>`
+    <div class="goal-item" style="border-left-color:${g.c}">
+      <div class="goal-name">${g.name}</div>
+      <div class="goal-desc">${g.desc}</div>
+      <div class="pbar"><div class="pfill" style="width:${g.prog}%;background:${g.c}"></div></div>
+      <div class="goal-foot"><span class="fc t2" style="font-size:.72rem">${g.prog}%</span></div>
+    </div>
+  `).join('');
+}
+
+/* ── STATS ── */
+function renderStats(){
+  const readCnt=books.filter(b=>b.status==='read').length;
+  const doneCnt=tasks.filter(t2=>t2.done).length;
+  const rated=books.filter(b=>b.rating>0);
+  const avg=rated.length?(rated.reduce((s,b)=>s+b.rating,0)/rated.length).toFixed(1):'—';
+  document.getElementById('stats-cards').innerHTML=`
+    <div class="scard2"><div class="ico">📚</div><div class="val">${readCnt}</div><div class="lbl">${t('books')}</div></div>
+    <div class="scard2"><div class="ico">✅</div><div class="val">${doneCnt}</div><div class="lbl">${t('doneLabel')}</div></div>
+    <div class="scard2"><div class="ico">🔥</div><div class="val">7</div><div class="lbl">${t('streakLabel')}</div></div>
+    <div class="scard2"><div class="ico">⭐</div><div class="val">${avg}</div><div class="lbl">${t('rating')}</div></div>
+  `;
+  const daysShort={uz:['Du','Se','Ch','Pa','Ju','Sh','Ya'],ru:['Пн','Вт','Ср','Чт','Пт','Сб','Вс'],en:['Mo','Tu','We','Th','Fr','Sa','Su']};
+  const ds=daysShort[lang];
+  document.getElementById('habits-cont').innerHTML=habits.map(h=>`
+    <div class="habit-row">
+      <div class="habit-name">${h.n}</div>
+      <div class="hdots">
+        ${h.days.map((d,i)=>`<div class="hdot ${d?(h.c==='g'?'g':'y'):''}" title="${ds[i]}">${d?'✓':''}</div>`).join('')}
+      </div>
+      <div class="hpct">${Math.round(h.days.filter(Boolean).length/7*100)}%</div>
+    </div>
+  `).join('');
+  const qs=QUOTES[lang]||QUOTES.uz;
+  const q=qs[qIdx%qs.length];
+  _t('motiv-q','"'+q.q+'"');_t('motiv-a','— '+q.a);
+  _t('btn-newq2',t('newQuote'));
+}
+
+/* ── PROFILE ── */
+function renderProf(){
+  _t('pn',prof.name);_t('pt',prof.tagline);_t('pb',prof.bio);
+  document.getElementById('ptags').innerHTML=(prof.tags||[]).map(tg=>`<span class="chip chip-gold">${tg}</span>`).join('');
+  if(prof.av){
+    document.getElementById('pav').innerHTML=`<img src="${prof.av}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>`;
+    document.getElementById('nav-av-img').src=prof.av;
+    document.getElementById('nav-av-img').style.display='block';
+    document.getElementById('nav-av-e').style.display='none';
+  }
+  document.getElementById('p-skills').innerHTML=(prof.skills||[]).map(s=>`
+    <div class="sk-item">
+      <div class="sk-top"><span class="sk-n">${s.name}</span><span class="sk-p">${s.pct}%</span></div>
+      <div class="sk-bar"><div class="sk-fill" style="width:${s.pct}%"></div></div>
+    </div>
+  `).join('')||`<div class="empty" style="padding:.75rem 0">${t('empty')}</div>`;
+  document.getElementById('p-achs').innerHTML=(prof.achievements||[]).map(a=>`
+    <div class="ach-item">
+      <div class="ach-ico">${a.ico}</div>
+      <div class="ach-info"><h5>${a.title}</h5><p>${a.desc}</p><span>${a.date}</span></div>
+    </div>
+  `).join('')||`<div class="empty" style="padding:.75rem 0">${t('empty')}</div>`;
+  document.getElementById('p-socs').innerHTML=(prof.socials||[]).map(s=>`
+    <a class="soc-link" href="${s.url.startsWith('http')?s.url:'#'}" target="_blank">
+      ${s.ico} ${s.name}<span>${s.url}</span>
+    </a>
+  `).join('')||`<div class="empty" style="padding:.75rem 0">${t('empty')}</div>`;
+}
+function upPic(e){
+  const f=e.target.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=ev=>{prof.av=ev.target.result;sv('MY_prof',prof);renderProf();toast(t('saved'));};
+  r.readAsDataURL(f);
+}
+function saveProf(){
+  prof.name=document.getElementById('pe-name').value.trim()||prof.name;
+  prof.tagline=document.getElementById('pe-tag').value.trim()||prof.tagline;
+  prof.bio=document.getElementById('pe-bio').value.trim()||prof.bio;
+  const tgsRaw=document.getElementById('pe-tags').value.trim();
+  if(tgsRaw) prof.tags=tgsRaw.split(',').map(t=>t.trim()).filter(Boolean);
+  sv('MY_prof',prof);closeM('m-pedit');renderProf();renderDash();toast(t('saved'));
+}
+function saveSkill(){
+  const n=document.getElementById('sk-name').value.trim();
+  if(!n){toast(t('fieldRequired'));return;}
+  prof.skills.push({name:n,pct:+document.getElementById('sk-pct').value});
+  sv('MY_prof',prof);closeM('m-skill');
+  document.getElementById('sk-name').value='';renderProf();toast(t('added'));
+}
+function saveAch(){
+  const title=document.getElementById('ach-title').value.trim();
+  if(!title){toast(t('fieldRequired'));return;}
+  prof.achievements.unshift({ico:document.getElementById('ach-ico').value||'🏆',title,
+    desc:document.getElementById('ach-desc').value.trim(),
+    date:document.getElementById('ach-date').value.trim()||new Date().getFullYear().toString()});
+  sv('MY_prof',prof);closeM('m-ach');
+  ['ach-title','ach-desc','ach-date'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+  renderProf();toast(t('added'));
+}
+function saveSoc(){
+  const n=document.getElementById('soc-name').value.trim();
+  if(!n){toast(t('fieldRequired'));return;}
+  prof.socials.push({ico:document.getElementById('soc-ico').value||'🔗',name:n,url:document.getElementById('soc-url').value.trim()||'#'});
+  sv('MY_prof',prof);closeM('m-soc');
+  ['soc-name','soc-url'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+  renderProf();toast(t('added'));
+}
+/* ── ADMIN ── */
+function renderAdm(){
+  const readCnt=books.filter(b=>b.status==='read').length;
+  const ag=document.getElementById('adm-stats-g');
+  if(ag)ag.innerHTML=`
+    <div class="scard2"><div class="ico">👥</div><div class="val">${DEMO_USERS.length}</div><div class="lbl">${t('usersTab')}</div></div>
+    <div class="scard2"><div class="ico">📚</div><div class="val">${books.length}</div><div class="lbl">${t('books')}</div></div>
+    <div class="scard2"><div class="ico">🎓</div><div class="val">${mats.length}</div><div class="lbl">${t('materials')}</div></div>
+    <div class="scard2"><div class="ico">💬</div><div class="val">${revs.length}</div><div class="lbl">${t('reviews')}</div></div>
+  `;
+  const at=document.getElementById('adm-act-t');
+  if(at) at.innerHTML=`<thead><tr><th>${t('author')}</th><th>${t('recentActivity')}</th><th></th></tr></thead>
+    <tbody>
+      <tr><td>Sardor T.</td><td>${t('addBook')}: Atom Odatlar</td><td><span class="dot dot-g"></span></td></tr>
+      <tr><td>Malika R.</td><td>${t('post')}: Sapiens</td><td><span class="dot dot-g"></span></td></tr>
+    </tbody>`;
+  const ut=document.getElementById('adm-us-t');
+  if(ut) ut.innerHTML=`<thead><tr><th>#</th><th>${t('profEdit').replace('✏️ ','')}</th><th>${t('email')}</th><th>Admin</th><th></th></tr></thead>
+    <tbody>${DEMO_USERS.map((u,i)=>`<tr><td>${i+1}</td><td>${u.name}</td><td>${u.email}</td>
+      <td>${u.isAdmin?'✅':''}</td>
+      <td><button class="ta ta-del">🗑</button></td>
+    </tr>`).join('')}</tbody>`;
+  const ct=document.getElementById('adm-ct-t');
+  if(ct) ct.innerHTML=`<thead><tr><th>${t('matTitle')}</th><th>${t('type')}</th><th>${t('author')}</th><th></th></tr></thead>
+    <tbody>${mats.map(m=>`<tr><td>${m.title}</td><td>${t(m.type)||m.type}</td><td>${m.author}</td>
+      <td><button class="ta ta-del" onclick="delMat(${m.id})">🗑</button></td>
+    </tr>`).join('')}</tbody>`;
+  const ml=document.getElementById('adm-mod-list');
+  if(ml) ml.innerHTML=revs.map(r=>`
+    <div class="rev-card" style="margin-bottom:.75rem">
+      <div class="rev-head">
+        <div class="rev-av">${r.av||'👤'}</div>
+        <div><div class="rev-name">${r.user}</div><div class="rev-meta">${r.date}</div></div>
+        <div class="rev-stars">${'⭐'.repeat(r.rat)}</div>
+      </div>
+      <div class="rev-book">📚 ${r.book}</div>
+      <div class="rev-txt">${r.txt}</div>
+      <div style="display:flex;gap:.5rem;margin-top:.75rem">
+        <button class="btn btn-rose btn-sm" onclick="delRev(${r.id})">🗑 ${t('deleted')}</button>
+        <button class="btn btn-teal btn-sm">✅ OK</button>
+      </div>
+    </div>
+  `).join('')||`<div class="empty">${t('empty')}</div>`;
+}
+function delMat(id){mats=mats.filter(m=>m.id!==id);sv('MY_mats',mats);renderAdm();renderMats();toast(t('deleted'));}
+function delRev(id){revs=revs.filter(r=>r.id!==id);sv('MY_revs',revs);renderAdm();renderRevs();toast(t('deleted'));}
+
+/* ── MODALS ── */
+function openM(id){
+  if(id==='m-pedit'){
+    document.getElementById('pe-name').value=prof.name;
+    document.getElementById('pe-tag').value=prof.tagline;
+    document.getElementById('pe-bio').value=prof.bio;
+    document.getElementById('pe-tags').value=(prof.tags||[]).join(', ');
+  }
+  document.getElementById(id).classList.add('open');
+}
+function closeM(id){document.getElementById(id).classList.remove('open');}
+document.addEventListener('click',e=>{
+  document.querySelectorAll('.mo').forEach(m=>{if(e.target===m)m.classList.remove('open');});
+});
+// swipe down to close on mobile
+document.querySelectorAll('.mbox').forEach(box=>{
+  let sy=0;
+  box.addEventListener('touchstart',e=>{sy=e.touches[0].clientY;},{passive:true});
+  box.addEventListener('touchend',e=>{
+    if(e.changedTouches[0].clientY-sy>80){
+      const mo=box.closest('.mo');if(mo)mo.classList.remove('open');
+    }
+  },{passive:true});
+});
+
+/* ── TOAST ── */
+let _tt;
+function toast(msg){
+  const el=document.getElementById('toast');
+  el.textContent=msg;el.classList.add('show');
+  clearTimeout(_tt);_tt=setTimeout(()=>el.classList.remove('show'),2400);
+}
+
+/* ── ALL RENDER ── */
+function renderAll(){
+  renderDash();renderBooks();renderMats();renderRevs();renderRecos();
+  renderTasks();renderGoals();renderStats();renderProf();
+  setDayLabel();
+}
+
+/* ── INIT ── */
+applyLang();
+</script>
+</body>
+</html>
